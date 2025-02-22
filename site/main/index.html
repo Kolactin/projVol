@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de scout - Vôlei</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="../main/pictures/favicon.png" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>Sistema de scout</h1>
+    </header>
+
+    <main>
+        <p>
+            <label for="iAt">Inserir novo atleta:</label>
+            <input type="text" name="At" id="iAt" placeholder="Digite um Nome">
+        </p>
+        <p>
+            <button onclick="add()">Adicionar</button>
+        </p>
+
+        <table id="dados" border="1">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Total Ataques</th>
+                    <th>Ataques certos</th>
+                    <th>Total Saques</th>
+                    <th>Saques certos</th>
+                    <th>Total Defesas</th>
+                    <th>Defesas certas</th>
+                    <th>% de acerto</th>
+                </tr>
+            </thead>
+            <tbody> 
+                <!-- Os atletas adicionados aparecerão aqui -->
+            </tbody>
+        </table>
+
+        <button onclick="exportarParaExcel()">Baixar Resultados (Excel)</button>
+
+        <!-- Importação do script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+        <script src="jsdados.js"></script>
+    </main>
+</body>
+</html>
