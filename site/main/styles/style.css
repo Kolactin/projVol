@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+*{
+    padding: 0px;
+}
+
+h1{
+    text-align: center;
+}
+
+form{
+
+}
+
+thead > tr > th { /* Criar cabeçalho fixo */
+    position: sticky;
+    top: -1px;
+    background-color: lightgray;
+    color: black;
+}   
+
+td{
+    text-align: center;
+    vertical-align: center;
+}

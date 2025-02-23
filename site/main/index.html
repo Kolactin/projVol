@@ -13,25 +13,39 @@
     </header>
 
     <main>
-        <p>
-            <label for="iAt">Inserir novo atleta:</label>
-            <input type="text" name="At" id="iAt" placeholder="Digite um Nome">
-        </p>
+        <form action="" autocomplete="off">
+            <fieldset>
+                <legend>Atleta + função</legend>
+                <p>
+                    <label for="iAt">Inserir novo atleta:</label>
+                    <input type="text" name="At" id="iAt" placeholder="Digite um Nome">
+                </p>
+                <p>
+                    <input type="checkbox" name="cen" id="iCen"> <label for="iCen">Central</label> <br>
+                    <input type="checkbox" name="pon" id="iPon"> <label for="iPon">Ponteiro</label> <br>
+                    <input type="checkbox" name="opo" id="iOpo"> <label for="iOpo">Oposto</label> <br>
+                    <input type="checkbox" name="lev" id="iLev"> <label for="iLev">Levantador</label> <br>
+                    <input type="checkbox" name="def" id="iDef"> <label for="iDef">líbero</label>
+                </p>
+            </fieldset>
+        </form>
         <p>
             <button onclick="add()">Adicionar</button>
         </p>
 
-        <table id="dados" border="1">
-            <legend></legend>
+        <table id="ata" border="1">
+            <caption>Atacantes</caption>
             <thead>
                 <tr>
                     <th>Nome</th>
+                    <th>posição</th>
                     <th>Total Ataques</th>
                     <th>Ataques certos</th>
+                    <th>nota Ataques</th>
                     <th>Total Saques</th>
                     <th>Saques certos</th>
-                    <th>Total Defesas</th>
-                    <th>Defesas certas</th>
+                    <th>Total passes</th>
+                    <th>passes certos</th>
                     <th>% de acerto</th>
                 </tr>
             </thead>
@@ -40,11 +54,52 @@
             </tbody>
         </table>
 
+        <table id="lev" border="1">
+            <caption>Levantadores</caption>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Total Levantamentos</th>
+                    <th>Levantamentos certas</th>
+                    <th>Nota levantamento</th>
+                    <th>Total Ataques</th>
+                    <th>Ataques certos</th>
+                    <th>Total Saques</th>
+                    <th>Saques certos</th>
+                    <th>% de acerto</th>
+                </tr>
+            </thead>
+            <tbody> 
+                <!-- Os atletas adicionados aparecerão aqui -->
+            </tbody>
+        </table>
+        </table>
+
+        <table id="def" border="1">
+            <caption>Líberos</caption>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Total defesas</th>
+                    <th>Defesas certas</th>
+                    <th>Nota defesas</th>
+                    <th>Total passes</th>
+                    <th>passes certos</th>
+                    <th>Total Levantamentos</th>
+                    <th>Levantamentos certas</th>
+                    <th>% de acerto</th>
+                </tr>
+            </thead>
+            <tbody> 
+                <!-- Os atletas adicionados aparecerão aqui -->
+            </tbody>
+        </table>
+        </table>
+
         <button onclick="exportarParaExcel()">Baixar Resultados (Excel)</button>
 
-        <!-- Importação do script -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-        <script src="jsdados.js"></script>
+        <script src="dados.js"></script>
     </main>
 </body>
 </html>
