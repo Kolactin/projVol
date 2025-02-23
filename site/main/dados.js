@@ -1,5 +1,4 @@
 function add(){
-
     var nome = document.querySelector("input#iAt").value;
     var central = document.querySelector("#iCen").checked;
     var ponteiro = document.querySelector("#iPon").checked;
@@ -126,6 +125,13 @@ function add(){
             }
             celPerc.textContent = percentual + "%";
         }
+
+        document.querySelector("#iCen").checked = false;
+        document.querySelector("#iPon").checked = false;
+        document.querySelector("#iOpo").checked = false;
+        document.querySelector("#iLev").checked = false;
+        document.querySelector("#iDef").checked = false;
+        document.querySelector("#iAt").focus();
     }
 
 function exportarParaExcel() {
@@ -145,4 +151,32 @@ function exportarParaExcel() {
     XLSX.writeFile(excAt, "resultado_Ata.xlsx"); // Salva e baixa o arquivo
     XLSX.writeFile(excLev, "resultado_Lev.xlsx");
     XLSX.writeFile(excDef, "resultado_Def.xlsx");
+}
+
+function saque(){
+    var nome2 = document.querySelector("input#iAt2").value;
+
+    if (nome2.trim() == ""){
+        alert("Insira o nome do atleta!")
+    } else{
+        var tabela = document.querySelector("#Saques"); 
+        var novaLinha = tabela.insertRow(); 
+        
+        var celNome = novaLinha.insertCell(0);
+        var celPos = novaLinha.insertCell(1);
+        var celAcer = novaLinha.insertCell(2);
+        var celErr = novaLinha.insertCell(3);
+        var celDef = novaLinha.insertCell(4)
+        var celNota = novaLinha.insertCell(5);
+
+        celNome.textContent = nome2;
+
+        [celPos, celAcer, celErr, celDef, celNota].forEach(cel => {
+            cel.textContent = "";
+            cel.contentEditable = "true";
+        });
+    }
+
+    document.querySelector("#iAt2").value = "";
+    document.querySelector("#iAt2").focus();
 }

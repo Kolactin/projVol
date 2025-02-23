@@ -3,13 +3,16 @@
 *{
     padding: 0px;
 }
-
+body{
+    background-color: rgb(29, 29, 39);
+    color: white;
+}
 h1{
     text-align: center;
 }
 
-form{
-
+table{
+    margin: 10px;
 }
 
 thead > tr > th { /* Criar cabeçalho fixo */
@@ -22,4 +25,21 @@ thead > tr > th { /* Criar cabeçalho fixo */
 td{
     text-align: center;
     vertical-align: center;
+}
+
+div{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column nowrap;
+}
+
+fieldset{
+    margin: 5px;
+    padding: 5px;
+}
+
+button{
+    margin: 5px;
 }

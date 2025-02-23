@@ -13,90 +13,127 @@
     </header>
 
     <main>
-        <form action="" autocomplete="off">
-            <fieldset>
-                <legend>Atleta + função</legend>
-                <p>
-                    <label for="iAt">Inserir novo atleta:</label>
-                    <input type="text" name="At" id="iAt" placeholder="Digite um Nome">
-                </p>
-                <p>
-                    <input type="checkbox" name="cen" id="iCen"> <label for="iCen">Central</label> <br>
-                    <input type="checkbox" name="pon" id="iPon"> <label for="iPon">Ponteiro</label> <br>
-                    <input type="checkbox" name="opo" id="iOpo"> <label for="iOpo">Oposto</label> <br>
-                    <input type="checkbox" name="lev" id="iLev"> <label for="iLev">Levantador</label> <br>
-                    <input type="checkbox" name="def" id="iDef"> <label for="iDef">líbero</label>
-                </p>
-            </fieldset>
-        </form>
-        <p>
-            <button onclick="add()">Adicionar</button>
-        </p>
+        <div id="at_fun">
+            <form action="" autocomplete="off">
+                <fieldset>
+                    <legend>Atleta + função</legend>
+                    <p>
+                        <label for="iAt">Inserir novo atleta:</label>
+                        <input type="text" name="At" id="iAt" placeholder="Digite um Nome">
+                    </p>
+                    <p>
+                        <input type="checkbox" name="cen" id="iCen"> <label for="iCen">Central</label> <br>
+                        <input type="checkbox" name="pon" id="iPon"> <label for="iPon">Ponteiro</label> <br>
+                        <input type="checkbox" name="opo" id="iOpo"> <label for="iOpo">Oposto</label> <br>
+                        <input type="checkbox" name="lev" id="iLev"> <label for="iLev">Levantador</label> <br>
+                        <input type="checkbox" name="def" id="iDef"> <label for="iDef">líbero</label>
+                    </p>
+                </fieldset>
+            </form>
+             <button onclick="add()">Adicionar atleta</button>
+        </div>
 
-        <table id="ata" border="1">
-            <caption>Atacantes</caption>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>posição</th>
-                    <th>Total Ataques</th>
-                    <th>Ataques certos</th>
-                    <th>nota Ataques</th>
-                    <th>Total Saques</th>
-                    <th>Saques certos</th>
-                    <th>Total passes</th>
-                    <th>passes certos</th>
-                    <th>% de acerto</th>
-                </tr>
-            </thead>
-            <tbody> 
-                <!-- Os atletas adicionados aparecerão aqui -->
-            </tbody>
-        </table>
+        <div>
+            <table id="ata" border="1">
+                <caption>Atacantes</caption>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>posição</th>
+                        <th>Total Ataques</th>
+                        <th>Ataques certos</th>
+                        <th>nota Ataques</th>
+                        <th>Total Saques</th>
+                        <th>Saques certos</th>
+                        <th>Total passes</th>
+                        <th>passes certos</th>
+                        <th>% de acerto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Os atletas adicionados aparecerão aqui -->
+                </tbody>
+            </table>
+        </div>
 
-        <table id="lev" border="1">
-            <caption>Levantadores</caption>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Total Levantamentos</th>
-                    <th>Levantamentos certas</th>
-                    <th>Nota levantamento</th>
-                    <th>Total Ataques</th>
-                    <th>Ataques certos</th>
-                    <th>Total Saques</th>
-                    <th>Saques certos</th>
-                    <th>% de acerto</th>
-                </tr>
-            </thead>
-            <tbody> 
-                <!-- Os atletas adicionados aparecerão aqui -->
-            </tbody>
-        </table>
-        </table>
+        <div>
+            <table id="lev" border="1">
+                <caption>Levantadores</caption>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Total Levantamentos</th>
+                        <th>Levantamentos certas</th>
+                        <th>Nota levantamento</th>
+                        <th>Total Ataques</th>
+                        <th>Ataques certos</th>
+                        <th>Total Saques</th>
+                        <th>Saques certos</th>
+                        <th>% de acerto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Os atletas adicionados aparecerão aqui -->
+                </tbody>
+            </table>
+        </div>
 
-        <table id="def" border="1">
-            <caption>Líberos</caption>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Total defesas</th>
-                    <th>Defesas certas</th>
-                    <th>Nota defesas</th>
-                    <th>Total passes</th>
-                    <th>passes certos</th>
-                    <th>Total Levantamentos</th>
-                    <th>Levantamentos certas</th>
-                    <th>% de acerto</th>
-                </tr>
-            </thead>
-            <tbody> 
-                <!-- Os atletas adicionados aparecerão aqui -->
-            </tbody>
-        </table>
-        </table>
+        <div>
+            <table id="def" border="1">
+                <caption>Líberos</caption>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Total defesas</th>
+                        <th>Defesas certas</th>
+                        <th>Nota defesas</th>
+                        <th>Total passes</th>
+                        <th>passes certos</th>
+                        <th>Total Levantamentos</th>
+                        <th>Levantamentos certas</th>
+                        <th>% de acerto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Os atletas adicionados aparecerão aqui -->
+                </tbody>
+            </table>
+        </div>
 
-        <button onclick="exportarParaExcel()">Baixar Resultados (Excel)</button>
+        <div><button onclick="exportarParaExcel()">Baixar Resultados (Excel)</button></div>
+
+        <div>
+            <form action="" autocomplete="off">
+                <fieldset>
+                    <legend>Atleta para saque</legend>
+                    <p>
+                        <label for="iAt2">Inserir novo atleta:</label>
+                        <input type="text" name="At" id="iAt2" placeholder="Digite um Nome">
+                    </p>
+                </fieldset>
+            </form>
+
+            <button onclick="saque()">Adicionar saque</button>
+
+            <caption>Saques</caption>
+            <table id="Saques" border="1">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Posição</th>
+                        <th>Acerto</th>
+                        <th>Erro</th>
+                        <th>defendeu</th>
+                        <th>Nota do saque</th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+                </tbody> 
+                   </table>
+        </div>
+
+        
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
         <script src="dados.js"></script>
