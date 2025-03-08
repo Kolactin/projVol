@@ -1,11 +1,11 @@
 var c = 0;
+var funcao = "";
 
-function criarLista(nome){
+function criarLista(nome, funcao){
     var container = document.querySelector("div#nomesCheck");
     var button = document.createElement("input");
 
     button.type = "button";
-    button.name = "atleta";
     button.value = nome;
     button.id = ("i" + nome + c);
     
@@ -14,15 +14,36 @@ function criarLista(nome){
     container.appendChild(button);
     container.appendChild(document.createElement("br"));
 
-    button.addEventListener("change", function(){
-        if(button.onclick) {
+    button.addEventListener("click", function(){
             butOptions(funcao)
-        }
     });
 }
 
 function butOptions(funcao){
-    
+    if (funcao == "central" || funcao == "oposto" || funcao == "ponteiro") {
+        var acao = document.querySelector("#acao");
+
+        var a1 = document.createElement("input");
+        var a2 = document.createElement("input");
+        var a3 = document.createElement("input");
+        var a4 = document.createElement("input");
+        var a5 = document.createElement("input");
+
+        [a1, a2, a3, a4, a5].forEach(a => {
+            a.type = "button";
+        });
+
+        a1.value = "ataque";
+        a2.value = "passe";
+        a3.value = "recepção";
+        a4.value = "bloqueio";
+        a5.value = "defesa";
+
+        acao.appendChild(a1);
+        acao.appendChild(a2);
+        acao.appendChild(a3);
+        acao.appendChild(a4);
+    }
 }
 
 function add(){
@@ -32,7 +53,7 @@ function add(){
     var oposto = document.querySelector("#iOpo").checked;
     var libero = document.querySelector("#iDef").checked;
     var levantador = document.querySelector("#iLev").checked;
-    var funAta = funcao = "";
+    var funAta = "";
 
     if (central){
         funAta = funcao = "central";
@@ -48,7 +69,7 @@ function add(){
         return;
     }
     
-    criarLista(nome);
+    criarLista(nome, funcao);
 
     if (funAta){ 
         var tabela = document.querySelector("#ata"); 

@@ -44,7 +44,7 @@ button{
     margin: 5px;
 }
 
-#nomesCheck{
+#nomesCheck, #acao, #opcoes{
     display: flex;
     flex-flow: row nowrap;
 }
