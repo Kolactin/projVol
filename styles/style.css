@@ -43,3 +43,12 @@ fieldset{
 button{
     margin: 5px;
 }
+
+#nomesCheck{
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+#nomesCheck button{
+    margin: 0px 5px;
+}

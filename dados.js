@@ -1,3 +1,30 @@
+var c = 0;
+
+function criarLista(nome){
+    var container = document.querySelector("div#nomesCheck");
+    var button = document.createElement("input");
+
+    button.type = "button";
+    button.name = "atleta";
+    button.value = nome;
+    button.id = ("i" + nome + c);
+    
+    c++;
+
+    container.appendChild(button);
+    container.appendChild(document.createElement("br"));
+
+    button.addEventListener("change", function(){
+        if(button.onclick) {
+            butOptions(funcao)
+        }
+    });
+}
+
+function butOptions(funcao){
+    
+}
+
 function add(){
     var nome = document.querySelector("input#iAt").value;
     var central = document.querySelector("#iCen").checked;
@@ -5,26 +32,28 @@ function add(){
     var oposto = document.querySelector("#iOpo").checked;
     var libero = document.querySelector("#iDef").checked;
     var levantador = document.querySelector("#iLev").checked;
-    var funAta = "";
+    var funAta = funcao = "";
 
     if (central){
-        funAta = "central";
+        funAta = funcao = "central";
     } 
     if (oposto){
-        funAta = "oposto";
+        funAta = funcao = "oposto";
     } 
     if (ponteiro){
-        funAta = "ponteiro";
+        funAta = funcao = "ponteiro";
     } 
     if (nome.trim() == ""){
         alert("Por favor, informe um nome")
         return;
     }
     
-    if (funAta){
+    criarLista(nome);
+
+    if (funAta){ 
         var tabela = document.querySelector("#ata"); 
         var novaLinha = tabela.insertRow(); 
-        
+
         var celNome = novaLinha.insertCell(0);
         var celPos = novaLinha.insertCell(1);
         var celAt = novaLinha.insertCell(2);
@@ -51,6 +80,7 @@ function add(){
     }
 
     if (levantador){
+        funcao = "Levantador";
         var tabela = document.querySelector("#lev"); 
         var novaLinha = tabela.insertRow(); 
         
@@ -78,6 +108,7 @@ function add(){
     }
 
     if (libero){
+        funcao = "Libero";
         var tabela = document.querySelector("#def"); 
         var novaLinha = tabela.insertRow(); 
         
@@ -151,32 +182,4 @@ function exportarParaExcel() {
     XLSX.writeFile(excAt, "resultado_Ata.xlsx"); // Salva e baixa o arquivo
     XLSX.writeFile(excLev, "resultado_Lev.xlsx");
     XLSX.writeFile(excDef, "resultado_Def.xlsx");
-}
-
-function saque(){
-    var nome2 = document.querySelector("input#iAt2").value;
-
-    if (nome2.trim() == ""){
-        alert("Insira o nome do atleta!")
-    } else{
-        var tabela = document.querySelector("#Saques"); 
-        var novaLinha = tabela.insertRow(); 
-        
-        var celNome = novaLinha.insertCell(0);
-        var celPos = novaLinha.insertCell(1);
-        var celAcer = novaLinha.insertCell(2);
-        var celErr = novaLinha.insertCell(3);
-        var celDef = novaLinha.insertCell(4)
-        var celNota = novaLinha.insertCell(5);
-
-        celNome.textContent = nome2;
-
-        [celPos, celAcer, celErr, celDef, celNota].forEach(cel => {
-            cel.textContent = "";
-            cel.contentEditable = "true";
-        });
-    }
-
-    document.querySelector("#iAt2").value = "";
-    document.querySelector("#iAt2").focus();
 }

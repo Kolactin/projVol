@@ -14,7 +14,7 @@
 
     <main>
         <div id="at_fun">
-            <form action="" autocomplete="off">
+            <form autocomplete="off">
                 <fieldset>
                     <legend>Atleta + função</legend>
                     <p>
@@ -33,6 +33,12 @@
              <button onclick="add()">Adicionar atleta</button>
         </div>
 
+        <form>
+            <fieldset>
+                <legend>atletas</legend>
+                <div id="nomesCheck"></div>
+            </fieldset>
+        </form>
         <div>
             <table id="ata" border="1">
                 <caption>Atacantes</caption>
@@ -101,37 +107,6 @@
         </div>
 
         <div><button onclick="exportarParaExcel()">Baixar Resultados (Excel)</button></div>
-
-        <div>
-            <form action="" autocomplete="off">
-                <fieldset>
-                    <legend>Atleta para saque</legend>
-                    <p>
-                        <label for="iAt2">Inserir novo atleta:</label>
-                        <input type="text" name="At" id="iAt2" placeholder="Digite um Nome">
-                    </p>
-                </fieldset>
-            </form>
-
-            <button onclick="saque()">Adicionar saque</button>
-
-            <caption>Saques</caption>
-            <table id="Saques" border="1">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Posição</th>
-                        <th>Acerto</th>
-                        <th>Erro</th>
-                        <th>defendeu</th>
-                        <th>Nota do saque</th>
-                    </tr>
-                </thead>
-                <tbody>
-            
-                </tbody> 
-                   </table>
-        </div>
 
         
 
