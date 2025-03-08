@@ -20,7 +20,7 @@ function criarLista(nome, funcao){
 }
 
 function butOptions(funcao){
-    if (funcao == "central" || funcao == "oposto" || funcao == "ponteiro") {
+    if (funcao === "central" || funcao === "oposto" || funcao === "ponteiro") {
         var acao = document.querySelector("#acao");
 
         var a1 = document.createElement("input");
@@ -44,9 +44,58 @@ function butOptions(funcao){
         acao.appendChild(a3);
         acao.appendChild(a4);
     }
+    else{
+        if(funcao === "Levantador"){
+            var acao = document.querySelector("#acao");
+
+            var a1 = document.createElement("input");
+            var a2 = document.createElement("input");
+            var a3 = document.createElement("input");
+            var a4 = document.createElement("input");
+            var a5 = document.createElement("input");
+
+            [a1, a2, a3, a4, a5].forEach(a => {
+                a.type = "button";
+            });
+
+            a1.value = "levantamento";
+            a2.value = "passe";
+            a3.value = "defesa";
+            a4.value = "bloqueio";
+            a5.value = "ataque";
+
+            acao.appendChild(a1);
+            acao.appendChild(a2);
+            acao.appendChild(a3);
+            acao.appendChild(a4);
+        }
+        else if(funcao === "Libero"){
+            var acao = document.querySelector("#acao");
+
+            var a1 = document.createElement("input");
+            var a2 = document.createElement("input");
+            var a3 = document.createElement("input");
+            var a4 = document.createElement("input");
+            var a5 = document.createElement("input");
+
+            [a1, a2, a3, a4, a5].forEach(a => {
+                a.type = "button";
+            });
+
+            a1.value = "Recepção";
+            a2.value = "Defesa";
+            a3.value = "Levantamento";
+
+            acao.appendChild(a1);
+            acao.appendChild(a2);
+            acao.appendChild(a3);
+            acao.appendChild(a4);
+        }
+    }
 }
 
 function add(){
+    
     var nome = document.querySelector("input#iAt").value;
     var central = document.querySelector("#iCen").checked;
     var ponteiro = document.querySelector("#iPon").checked;
