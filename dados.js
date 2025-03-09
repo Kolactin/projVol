@@ -248,6 +248,38 @@ function butOptions(funcao){
         }
     }
 
+function addCasa(){
+    var placarCasa = document.querySelector("#iCasa");
+
+    var placar = Number(placarCasa.value) + 1;
+
+    placarCasa.value = placar;
+}
+
+function addFora(){
+    var placarFora = document.querySelector("#iFora");
+
+    var placar = Number(placarFora.value) + 1;
+
+    placarFora.value = placar;
+}
+
+function remCasa(){
+    var placarCasa = document.querySelector("#iCasa");
+
+    var placar = Number(placarCasa.value) - 1;
+
+    placarCasa.value = placar;
+}
+
+function remFora(){
+    var placarFora = document.querySelector("#iFora");
+
+    var placar = Number(placarFora.value) - 1;
+
+    placarFora.value = placar;
+}
+
 function exportarParaExcel() {
     var at = document.querySelector("#ata"); // Seleciona a tabela
     var lev = document.querySelector("#lev");
