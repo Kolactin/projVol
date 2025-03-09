@@ -1,99 +1,6 @@
 var c = 0;
 var funcao = "";
 
-function criarLista(nome, funcao){
-    var container = document.querySelector("div#nomesCheck");
-    var button = document.createElement("input");
-
-    button.type = "button";
-    button.value = nome;
-    button.id = ("i" + nome + c);
-    
-    c++;
-
-    container.appendChild(button);
-    container.appendChild(document.createElement("br"));
-
-    button.addEventListener("click", function(){
-            butOptions(funcao)
-    });
-}
-
-function butOptions(funcao){
-    if (funcao === "central" || funcao === "oposto" || funcao === "ponteiro") {
-        var acao = document.querySelector("#acao");
-
-        var a1 = document.createElement("input");
-        var a2 = document.createElement("input");
-        var a3 = document.createElement("input");
-        var a4 = document.createElement("input");
-        var a5 = document.createElement("input");
-
-        [a1, a2, a3, a4, a5].forEach(a => {
-            a.type = "button";
-        });
-
-        a1.value = "ataque";
-        a2.value = "passe";
-        a3.value = "recepção";
-        a4.value = "bloqueio";
-        a5.value = "defesa";
-
-        acao.appendChild(a1);
-        acao.appendChild(a2);
-        acao.appendChild(a3);
-        acao.appendChild(a4);
-    }
-    else{
-        if(funcao === "Levantador"){
-            var acao = document.querySelector("#acao");
-
-            var a1 = document.createElement("input");
-            var a2 = document.createElement("input");
-            var a3 = document.createElement("input");
-            var a4 = document.createElement("input");
-            var a5 = document.createElement("input");
-
-            [a1, a2, a3, a4, a5].forEach(a => {
-                a.type = "button";
-            });
-
-            a1.value = "levantamento";
-            a2.value = "passe";
-            a3.value = "defesa";
-            a4.value = "bloqueio";
-            a5.value = "ataque";
-
-            acao.appendChild(a1);
-            acao.appendChild(a2);
-            acao.appendChild(a3);
-            acao.appendChild(a4);
-        }
-        else if(funcao === "Libero"){
-            var acao = document.querySelector("#acao");
-
-            var a1 = document.createElement("input");
-            var a2 = document.createElement("input");
-            var a3 = document.createElement("input");
-            var a4 = document.createElement("input");
-            var a5 = document.createElement("input");
-
-            [a1, a2, a3, a4, a5].forEach(a => {
-                a.type = "button";
-            });
-
-            a1.value = "Recepção";
-            a2.value = "Defesa";
-            a3.value = "Levantamento";
-
-            acao.appendChild(a1);
-            acao.appendChild(a2);
-            acao.appendChild(a3);
-            acao.appendChild(a4);
-        }
-    }
-}
-
 function add(){
     
     var nome = document.querySelector("input#iAt").value;
@@ -106,19 +13,16 @@ function add(){
 
     if (central){
         funAta = funcao = "central";
-    } 
-    if (oposto){
+    } else if (oposto){
         funAta = funcao = "oposto";
-    } 
-    if (ponteiro){
+    } else if (ponteiro){
         funAta = funcao = "ponteiro";
     } 
+
     if (nome.trim() == ""){
         alert("Por favor, informe um nome")
         return;
     }
-    
-    criarLista(nome, funcao);
 
     if (funAta){ 
         var tabela = document.querySelector("#ata"); 
@@ -150,7 +54,7 @@ function add(){
     }
 
     if (levantador){
-        funcao = "Levantador";
+        funcao = "levantador";
         var tabela = document.querySelector("#lev"); 
         var novaLinha = tabela.insertRow(); 
         
@@ -178,7 +82,7 @@ function add(){
     }
 
     if (libero){
-        funcao = "Libero";
+        funcao = "libero";
         var tabela = document.querySelector("#def"); 
         var novaLinha = tabela.insertRow(); 
         
@@ -204,6 +108,8 @@ function add(){
 
         document.querySelector("#iAt").value = ""; // Limpa o campo de input após adicionar
     }
+
+    criarLista(nome, funcao);
 
         function atualizarPercentual() {
             var at = parseInt(celAt.textContent);
@@ -235,6 +141,113 @@ function add(){
         document.querySelector("#iAt").focus();
     }
 
+function criarLista(nome, funcao){
+    var container = document.querySelector("div#nomesCheck");
+    var button = document.createElement("input");
+
+    button.type = "button";
+    button.value = nome;
+    button.id = ("i" + nome + c);
+    
+    c++;
+
+    container.appendChild(button);
+    container.appendChild(document.createElement("br"));
+
+    button.addEventListener("click", function(){
+            butOptions(funcao)
+    });
+}
+    
+function butOptions(funcao){
+    var acao = document.querySelector("#acao");
+    acao.innerHTML = "";
+
+    if (funcao === "central" || funcao === "oposto") {
+
+        var a1 = document.createElement("input");
+        var a2 = document.createElement("input");
+
+        [a1, a2].forEach(a => {
+            a.type = "button";
+        });
+
+        a1.value = "ataque";
+        a2.value = "bloqueio";
+
+        acao.appendChild(a1);
+        acao.appendChild(a2);
+
+    } 
+
+    if (funcao === "ponteiro"){
+        var a1 = document.createElement("input");
+        var a2 = document.createElement("input");
+        var a3 = document.createElement("input");
+        var a4 = document.createElement("input");
+        var a5 = document.createElement("input");
+
+        [a1, a2, a3, a4, a5].forEach(a => {
+            a.type = "button";
+        });
+
+        a1.value = "ataque";
+        a2.value = "bloqueio";
+        a3.value = "passe";
+        a3.value = "defesa";
+
+        acao.appendChild(a1);
+        acao.appendChild(a2);
+        acao.appendChild(a3);
+        acao.appendChild(a4);
+    }
+    
+    if(funcao == "levantador"){
+
+            var lev1 = document.createElement("input");
+            var lev2 = document.createElement("input");
+            var lev3 = document.createElement("input");
+            var lev4 = document.createElement("input");
+            var lev5 = document.createElement("input");
+
+            [lev1, lev2, lev3, lev4, lev5].forEach(lev => {
+                lev.type = "button";
+            });
+
+            lev1.value = "levantamento";
+            lev2.value = "passe";
+            lev3.value = "ataque";
+            lev4.value = "bloqueio";
+
+            acao.appendChild(lev1);
+            acao.appendChild(lev2);
+            acao.appendChild(lev3);
+            acao.appendChild(lev4);
+        } 
+        
+        if(funcao == "libero"){
+
+            var lib1 = document.createElement("input");
+            var lib2 = document.createElement("input");
+            var lib3 = document.createElement("input");
+            var lib4 = document.createElement("input");
+            var lib5 = document.createElement("input");
+
+            [lib1, lib2, lib3, lib4, lib5].forEach(lib => {
+                lib.type = "button";
+            });
+
+            lib1.value = "Recepção";
+            lib2.value = "Defesa";
+            lib3.value = "Levantamento";
+
+            acao.appendChild(lib1);
+            acao.appendChild(lib2);
+            acao.appendChild(lib3);
+            acao.appendChild(lib4);
+        }
+    }
+
 function exportarParaExcel() {
     var at = document.querySelector("#ata"); // Seleciona a tabela
     var lev = document.querySelector("#lev");
@@ -243,8 +256,8 @@ function exportarParaExcel() {
     var excLev = XLSX.utils.book_new();
     var excDef = XLSX.utils.book_new();
     var planAt = XLSX.utils.table_to_sheet(at); // Converte a tabela HTML para uma planilha
-    var planLev = XLSX.utils.table_to_sheet(at);
-    var planDef = XLSX.utils.table_to_sheet(at);
+    var planLev = XLSX.utils.table_to_sheet(lev);
+    var planDef = XLSX.utils.table_to_sheet(def);
     
     XLSX.utils.book_append_sheet(excAt, planAt, "Scout de Vôlei"); // Adiciona a planilha ao arquivo
     XLSX.utils.book_append_sheet(excLev, planLev, "Scout de Vôlei");
