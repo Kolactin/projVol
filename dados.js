@@ -3,6 +3,8 @@ var funcao = "";
 
 function add(){
     
+    i = 0;
+
     var nome = document.querySelector("input#iAt").value;
     var central = document.querySelector("#iCen").checked;
     var ponteiro = document.querySelector("#iPon").checked;
@@ -26,6 +28,7 @@ function add(){
 
     if (funAta){ 
         var tabela = document.querySelector("#ata"); 
+        tabela.id = ("i"+ nome + i);
         var novaLinha = tabela.insertRow(); 
 
         var celNome = novaLinha.insertCell(0);
@@ -56,6 +59,7 @@ function add(){
     if (levantador){
         funcao = "levantador";
         var tabela = document.querySelector("#lev"); 
+        tabela.id = ("i"+ nome + i);
         var novaLinha = tabela.insertRow(); 
         
         var celNome = novaLinha.insertCell(0);
@@ -84,6 +88,7 @@ function add(){
     if (libero){
         funcao = "libero";
         var tabela = document.querySelector("#def"); 
+        tabela.id = ("i"+ nome + i);
         var novaLinha = tabela.insertRow(); 
         
         var celNome = novaLinha.insertCell(0);
@@ -178,6 +183,13 @@ function butOptions(funcao){
         acao.appendChild(a1);
         acao.appendChild(a2);
 
+        a1.addEventListener("click",  function(){
+            ataque(nome);
+        });
+
+        a2.addEventListener("click", function(){
+            bloqueio(nome);
+        });
     } 
 
     if (funcao === "ponteiro"){
@@ -200,6 +212,22 @@ function butOptions(funcao){
         acao.appendChild(a2);
         acao.appendChild(a3);
         acao.appendChild(a4);
+
+        a1.addEventListener("click",  function(){
+            ataque(nome);
+        });
+
+        a2.addEventListener("click",  function(){
+            bloqueio(nome);
+        });
+
+        a3.addEventListener("click",  function(){
+            passe(nome);
+        });
+
+        a4.addEventListener("click", function(){
+            defesa(nome);
+        });
     }
     
     if(funcao == "levantador"){
@@ -223,6 +251,22 @@ function butOptions(funcao){
             acao.appendChild(lev2);
             acao.appendChild(lev3);
             acao.appendChild(lev4);
+
+            lev1.addEventListener("click",  function(){
+                levantamento(nome);
+            });
+
+            lev2.addEventListener("click",  function(){
+                passe(nome);
+            });
+
+            lev3.addEventListener("click",  function(){
+                ataque(nome);
+            });
+
+            lev4.addEventListener("click", function(){
+                bloqueio(nome);
+            });
         } 
         
         if(funcao == "libero"){
@@ -237,7 +281,7 @@ function butOptions(funcao){
                 lib.type = "button";
             });
 
-            lib1.value = "Recepção";
+            lib1.value = "Passe";
             lib2.value = "Defesa";
             lib3.value = "Levantamento";
 
@@ -245,9 +289,37 @@ function butOptions(funcao){
             acao.appendChild(lib2);
             acao.appendChild(lib3);
             acao.appendChild(lib4);
+
+            lib1.addEventListener("click",  function(){
+                passe(nome);
+            });
+
+            lib2.addEventListener("click",  function(){
+                defesa(nome);
+            });
+
+            lib3.addEventListener("click",  function(){
+                levantamento(nome);
+            });
         }
     }
 
+function ataque(nome){
+    var tabela = document.querySelector("#i"+ nome + i);
+    var novaLinha = tabela.insertCell
+}
+
+function levantamento(nome){
+
+}
+
+function defesa(nome){
+
+}
+
+function passe(nome){
+
+}
 function addCasa(){
     var placarCasa = document.querySelector("#iCasa");
 
