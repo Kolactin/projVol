@@ -306,7 +306,7 @@ function butOptions(funcao){
 
 function ataque(nome){
     var tabela = document.querySelector("#i"+ nome + i);
-    var novaLinha = tabela.insertCell
+    var novaLinha = tabela.insertCell();
 }
 
 function levantamento(nome){
