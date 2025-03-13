@@ -3,7 +3,7 @@ var funcao = "";
 
 function add(){
     
-    i = 0;
+    ata = lev = lib = 0;
 
     var nome = document.querySelector("input#iAt").value;
     var central = document.querySelector("#iCen").checked;
@@ -28,7 +28,11 @@ function add(){
 
     if (funAta){ 
         var tabela = document.querySelector("#ata"); 
-        tabela.id = ("i"+ nome + i);
+        tabela.id = ("i"+ nome + funcao);
+
+        ata++;
+
+
         var novaLinha = tabela.insertRow(); 
 
         var celNome = novaLinha.insertCell(0);
@@ -59,7 +63,10 @@ function add(){
     if (levantador){
         funcao = "levantador";
         var tabela = document.querySelector("#lev"); 
-        tabela.id = ("i"+ nome + i);
+        tabela.id = ("i"+ nome + funcao);
+
+        lev++;
+
         var novaLinha = tabela.insertRow(); 
         
         var celNome = novaLinha.insertCell(0);
@@ -88,8 +95,11 @@ function add(){
     if (libero){
         funcao = "libero";
         var tabela = document.querySelector("#def"); 
-        tabela.id = ("i"+ nome + i);
+
+        lib++;
+
         var novaLinha = tabela.insertRow(); 
+        novaLinha.id = "i" + nome + funcao;
         
         var celNome = novaLinha.insertCell(0);
         var celTDef = novaLinha.insertCell(1);
@@ -147,6 +157,8 @@ function add(){
     }
 
 function criarLista(nome, funcao){
+    c = 0;
+
     var container = document.querySelector("div#nomesCheck");
     var button = document.createElement("input");
 
@@ -184,11 +196,11 @@ function butOptions(funcao){
         acao.appendChild(a2);
 
         a1.addEventListener("click",  function(){
-            ataque(nome);
+            ataque(nome, funcao);
         });
 
         a2.addEventListener("click", function(){
-            bloqueio(nome);
+            bloqueio(nome, funcao);
         });
     } 
 
@@ -197,16 +209,15 @@ function butOptions(funcao){
         var a2 = document.createElement("input");
         var a3 = document.createElement("input");
         var a4 = document.createElement("input");
-        var a5 = document.createElement("input");
 
-        [a1, a2, a3, a4, a5].forEach(a => {
+        [a1, a2, a3, a4].forEach(a => {
             a.type = "button";
         });
 
         a1.value = "ataque";
         a2.value = "bloqueio";
         a3.value = "passe";
-        a3.value = "defesa";
+        a4.value = "defesa";
 
         acao.appendChild(a1);
         acao.appendChild(a2);
@@ -214,19 +225,19 @@ function butOptions(funcao){
         acao.appendChild(a4);
 
         a1.addEventListener("click",  function(){
-            ataque(nome);
+            ataque(nome, funcao);
         });
 
         a2.addEventListener("click",  function(){
-            bloqueio(nome);
+            bloqueio(nome, funcao);
         });
 
         a3.addEventListener("click",  function(){
-            passe(nome);
+            passe(nome, funcao);
         });
 
         a4.addEventListener("click", function(){
-            defesa(nome);
+            defesa(nome, funcao);
         });
     }
     
@@ -253,19 +264,19 @@ function butOptions(funcao){
             acao.appendChild(lev4);
 
             lev1.addEventListener("click",  function(){
-                levantamento(nome);
+                levantamento(nome, funcao);
             });
 
             lev2.addEventListener("click",  function(){
-                passe(nome);
+                passe(nome, funcao);
             });
 
             lev3.addEventListener("click",  function(){
-                ataque(nome);
+                ataque(nome, funcao);
             });
 
             lev4.addEventListener("click", function(){
-                bloqueio(nome);
+                bloqueio(nome, funcao);
             });
         } 
         
@@ -291,22 +302,46 @@ function butOptions(funcao){
             acao.appendChild(lib4);
 
             lib1.addEventListener("click",  function(){
-                passe(nome);
+                passe(nome, funcao);
             });
 
             lib2.addEventListener("click",  function(){
-                defesa(nome);
+                defesa(nome, funcao);
             });
 
             lib3.addEventListener("click",  function(){
-                levantamento(nome);
+                levantamento(nome, funcao);
             });
         }
     }
 
-function ataque(nome){
-    var tabela = document.querySelector("#i"+ nome + i);
-    var novaLinha = tabela.insertCell();
+function ataque(nome, funcao){
+    var idDaTabela = "i" + nome + funcao;
+
+    if (funcao === "central" || funcao === "ponteiro" || funcao === "oposto"){
+        var tabela = document.querySelector(idDaTabela);
+        var atCer = tabela.cells[3];
+        var ata = tabela.cells[2];
+
+        ata++;
+    }
+    
+    if (funcao === "levantador"){
+        var tabela = document.querySelector(idDaTabela);
+        var atCer = tabela.cells[5];
+        var ata = tabela.cells[4];
+
+        lev++;
+    }
+
+    if (!tabela) {
+        alert("Tabela não encontrada para:", nome);
+        return;
+    }
+
+
+    atCer.textContent = Number(atCer.textContent) + 1;
+    ata.textContent = Number(ata.textContent) + 1; 
 }
 
 function levantamento(nome){
