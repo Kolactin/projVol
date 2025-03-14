@@ -172,11 +172,11 @@ function criarLista(nome, funcao){
     container.appendChild(document.createElement("br"));
 
     button.addEventListener("click", function(){
-            butOptions(funcao)
+            butOptions(nome, funcao)
     });
 }
     
-function butOptions(funcao){
+function butOptions(nome, funcao){
     var acao = document.querySelector("#acao");
     acao.innerHTML = "";
 
@@ -318,20 +318,16 @@ function butOptions(funcao){
 function ataque(nome, funcao){
     var idDaTabela = "i" + nome + funcao;
 
-    if (funcao === "central" || funcao === "ponteiro" || funcao === "oposto"){
+    if (funcao == "central" || funcao == "ponteiro" || funcao == "oposto"){
         var tabela = document.querySelector(idDaTabela);
         var atCer = tabela.cells[3];
         var ata = tabela.cells[2];
-
-        ata++;
     }
     
-    if (funcao === "levantador"){
+    if (funcao == "levantador"){
         var tabela = document.querySelector(idDaTabela);
         var atCer = tabela.cells[5];
         var ata = tabela.cells[4];
-
-        lev++;
     }
 
     if (!tabela) {
