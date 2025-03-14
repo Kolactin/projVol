@@ -51,7 +51,7 @@ function add(){
         celPos.textContent = funAta;
         celNotAta.textContent = "X";
 
-        [celAt, celAtCer, celSaq, celSaqCer, celPas, celPasCer].forEach(cel => {
+        [celAt, celAtCer, celSaq, celSaqCer, celPas, celPasCer, celPerc].forEach(cel => {
             cel.addEventListener("input", atualizarPercentual);
             cel.textContent = 0;
             cel.contentEditable = "true";
@@ -83,7 +83,7 @@ function add(){
         celNome.textContent = nome;
         celNotaLev.textContent = "X";
 
-        [celTLev, celLev, celTSaq, celSaq, celTAta, celAta].forEach(cel => {
+        [celTLev, celLev, celTSaq, celSaq, celTAta, celAta, celPerc].forEach(cel => {
             cel.addEventListener("input", atualizarPercentual);
             cel.textContent = 0;
             cel.contentEditable = "true";
@@ -115,7 +115,7 @@ function add(){
         celNome.textContent = nome;
         celNotaDef.textContent = "X";
 
-        [celTDef, celDef, celTPas, celPas, celTLev, celLev].forEach(cel => {
+        [celTDef, celDef, celTPas, celPas, celTLev, celLev, celPerc].forEach(cel => {
             cel.addEventListener("input", atualizarPercentual);
             cel.textContent = 0;
             cel.contentEditable = "true";
