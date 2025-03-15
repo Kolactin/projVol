@@ -27,15 +27,16 @@ td{
     vertical-align: center;
 }
 
-div{
+div, #acao > button, #opcoes > button{
     padding: 5px;
+    margin: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
 }
 
-fieldset{
+fieldset, #acao, #opcoes{
     margin: 5px;
     padding: 5px;
 }
@@ -44,7 +45,7 @@ button{
     margin: 5px;
 }
 
-#nomesCheck, #acao, #opcoes{
+#nomesCheck{
     display: flex;
     flex-flow: row nowrap;
 }

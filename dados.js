@@ -1,9 +1,8 @@
 var c = 0;
 var funcao = "";
+var tabelAta = tabelaLev = tabelaLib = "";
 
 function add(){
-    
-    ata = lev = lib = 0;
 
     var nome = document.querySelector("input#iAt").value;
     var central = document.querySelector("#iCen").checked;
@@ -27,13 +26,10 @@ function add(){
     }
 
     if (funAta){ 
-        var tabela = document.querySelector("#ata"); 
-        tabela.id = ("i"+ nome + funcao);
+        tabelAta = document.querySelector("#ata");
 
-        ata++;
-
-
-        var novaLinha = tabela.insertRow(); 
+        var novaLinha = tabelAta.insertRow(); 
+        novaLinha.id = ("i"+ nome + funcao);
 
         var celNome = novaLinha.insertCell(0);
         var celPos = novaLinha.insertCell(1);
@@ -63,12 +59,10 @@ function add(){
     if (levantador){
         funcao = "levantador";
         var tabela = document.querySelector("#lev"); 
-        tabela.id = ("i"+ nome + funcao);
-
-        lev++;
 
         var novaLinha = tabela.insertRow(); 
-        
+        novaLinha.id = ("i"+ nome + funcao);
+
         var celNome = novaLinha.insertCell(0);
         var celTLev = novaLinha.insertCell(1);
         var celLev = novaLinha.insertCell(2);
@@ -95,8 +89,6 @@ function add(){
     if (libero){
         funcao = "libero";
         var tabela = document.querySelector("#def"); 
-
-        lib++;
 
         var novaLinha = tabela.insertRow(); 
         novaLinha.id = "i" + nome + funcao;
@@ -285,8 +277,6 @@ function butOptions(nome, funcao){
             var lib1 = document.createElement("input");
             var lib2 = document.createElement("input");
             var lib3 = document.createElement("input");
-            var lib4 = document.createElement("input");
-            var lib5 = document.createElement("input");
 
             [lib1, lib2, lib3, lib4, lib5].forEach(lib => {
                 lib.type = "button";
@@ -299,7 +289,6 @@ function butOptions(nome, funcao){
             acao.appendChild(lib1);
             acao.appendChild(lib2);
             acao.appendChild(lib3);
-            acao.appendChild(lib4);
 
             lib1.addEventListener("click",  function(){
                 passe(nome, funcao);
@@ -317,24 +306,19 @@ function butOptions(nome, funcao){
 
 function ataque(nome, funcao){
     var idDaTabela = "i" + nome + funcao;
-
+    
     if (funcao == "central" || funcao == "ponteiro" || funcao == "oposto"){
-        var tabela = document.querySelector(idDaTabela);
+        var tabela = document.querySelector("#" + idDaTabela);
+        
         var atCer = tabela.cells[3];
         var ata = tabela.cells[2];
     }
     
     if (funcao == "levantador"){
-        var tabela = document.querySelector(idDaTabela);
+        var tabela = document.querySelector("#" + idDaTabela);
         var atCer = tabela.cells[5];
         var ata = tabela.cells[4];
     }
-
-    if (!tabela) {
-        alert("Tabela não encontrada para:", nome);
-        return;
-    }
-
 
     atCer.textContent = Number(atCer.textContent) + 1;
     ata.textContent = Number(ata.textContent) + 1; 
@@ -351,6 +335,7 @@ function defesa(nome){
 function passe(nome){
 
 }
+
 function addCasa(){
     var placarCasa = document.querySelector("#iCasa");
 
