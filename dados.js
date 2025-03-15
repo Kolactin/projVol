@@ -170,7 +170,6 @@ function criarLista(nome, funcao){
     
 function butOptions(nome, funcao){
     var acao = document.querySelector("#acao");
-    acao.id = "iAcao"
     acao.innerHTML = "";
 
     if (funcao === "central" || funcao === "oposto") {
@@ -190,6 +189,7 @@ function butOptions(nome, funcao){
 
         a1.addEventListener("click",  function(){
             ataque(nome, funcao);
+            
         });
 
         a2.addEventListener("click", function(){
@@ -323,6 +323,7 @@ function ataque(nome, funcao){
 
     atCer.textContent = Number(atCer.textContent) + 1;
     ata.textContent = Number(ata.textContent) + 1; 
+
 }
 
 function levantamento(nome){
