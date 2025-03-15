@@ -41,11 +41,11 @@ fieldset, #acao, #opcoes{
     padding: 5px;
 }
 
-button{
-    margin: 5px;
+button, #iAcao{
+    margin: 0px 5px;
 }
 
-#nomesCheck, #acao, #opcoes{
+#nomesCheck, #acao, #opcoes, #iAcao{
     margin: 0px 10px;
     padding: 0px 10px;
     display: flex;

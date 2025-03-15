@@ -170,6 +170,7 @@ function criarLista(nome, funcao){
     
 function butOptions(nome, funcao){
     var acao = document.querySelector("#acao");
+    acao.id = "iAcao"
     acao.innerHTML = "";
 
     if (funcao === "central" || funcao === "oposto") {
