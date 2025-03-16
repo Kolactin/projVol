@@ -28,6 +28,7 @@
                         <input type="checkbox" name="lev" id="iLev"> <label for="iLev">Levantador</label> <br>
                         <input type="checkbox" name="def" id="iDef"> <label for="iDef">líbero</label>
                     </p>
+                    <p id="forms"></p>
                 </fieldset>
             </form>
              <button onclick="add()">Adicionar atleta</button>
@@ -58,17 +59,31 @@
             </form>
         </div>
 
-            <form>
+        <form>
+            <fieldset>
+                <legend>Atletas</legend>
+
                 <fieldset>
-                    <legend>Atletas</legend>
-                    <div id="nomesCheck"></div>
+                    <legend>Títulares</legend>
+                    <div id="titular"></div>
                 </fieldset>
 
                 <fieldset>
-                    <div id="acao"></div>
-                    <div id="opcoes"></div>
+                    <legend>Reservas</legend>
+                    <div id="reserva"></div>
                 </fieldset>
-            </form>
+            </fieldset>
+
+            <fieldset>
+                <legend>Ações</legend>
+                <div id="acao"></div>
+                <div id="opcoes"></div>
+            </fieldset>
+        </form>
+            
+        <div id="timeLine">
+
+        </div>
 
         <div>
             <table id="ata" border="1">

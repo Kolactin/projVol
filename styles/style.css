@@ -45,7 +45,7 @@ button, #iAcao{
     margin: 0px 5px;
 }
 
-#nomesCheck, #acao, #opcoes, #iAcao{
+#titular, #reserva, #acao, #opcoes, #iAcao{
     margin: 0px 10px;
     padding: 0px 10px;
     display: flex;

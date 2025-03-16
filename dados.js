@@ -1,5 +1,5 @@
 var c = 0;
-var funcao = "";
+var funcao = pos = "";
 var tabelAta = tabelaLev = tabelaLib = "";
 
 function add(){
@@ -50,7 +50,6 @@ function add(){
         [celAt, celAtCer, celSaq, celSaqCer, celPas, celPasCer, celPerc].forEach(cel => {
             cel.addEventListener("input", atualizarPercentual);
             cel.textContent = 0;
-            cel.contentEditable = "true";
         });
 
         document.querySelector("#iAt").value = ""; // Limpa o campo de input após adicionar
@@ -80,7 +79,6 @@ function add(){
         [celTLev, celLev, celTSaq, celSaq, celTAta, celAta, celPerc].forEach(cel => {
             cel.addEventListener("input", atualizarPercentual);
             cel.textContent = 0;
-            cel.contentEditable = "true";
         });
 
         document.querySelector("#iAt").value = ""; // Limpa o campo de input após adicionar
@@ -110,64 +108,127 @@ function add(){
         [celTDef, celDef, celTPas, celPas, celTLev, celLev, celPerc].forEach(cel => {
             cel.addEventListener("input", atualizarPercentual);
             cel.textContent = 0;
-            cel.contentEditable = "true";
         });
 
         document.querySelector("#iAt").value = ""; // Limpa o campo de input após adicionar
     }
 
-    criarLista(nome, funcao);
-
-        function atualizarPercentual() {
-            var at = parseInt(celAt.textContent);
-            var atCer = parseInt(celAtCer.textContent);
-            var saq = parseInt(celSaq.textContent);
-            var saqCer = parseInt(celSaqCer.textContent);
-            var def = parseInt(celPas.textContent);
-            var defCer = parseInt(celPasCer.textContent);
-
-            var toTent = at + saq + def;
-            var totCer = atCer + saqCer + defCer;
-            var percentual;
-
-            while (toTent == 0){
-                percentual = "";
-            }
-
-            if (toTent > 0){
-                percentual = ((totCer / toTent) * 100).toFixed(2);
-            }
-            celPerc.textContent = percentual + "%";
+    
+    function atualizarPercentual() {
+        var at = parseInt(celAt.textContent);
+        var atCer = parseInt(celAtCer.textContent);
+        var saq = parseInt(celSaq.textContent);
+        var saqCer = parseInt(celSaqCer.textContent);
+        var def = parseInt(celPas.textContent);
+        var defCer = parseInt(celPasCer.textContent);
+        
+        var toTent = at + saq + def;
+        var totCer = atCer + saqCer + defCer;
+        var percentual;
+        
+        while (toTent == 0){
+            percentual = "";
         }
-
-        document.querySelector("#iCen").checked = false;
-        document.querySelector("#iPon").checked = false;
-        document.querySelector("#iOpo").checked = false;
-        document.querySelector("#iLev").checked = false;
-        document.querySelector("#iDef").checked = false;
-        document.querySelector("#iAt").focus();
+        
+        if (toTent > 0){
+            percentual = ((totCer / toTent) * 100).toFixed(2);
+        }
+        celPerc.textContent = percentual + "%";
     }
+    
+    // Cria campo para escolha da posição do atleta.
+    posAtleta(nome);
+    
+    //rodizio(posQuad);
+    
+    document.querySelector("#iCen").checked = false;
+    document.querySelector("#iPon").checked = false;
+    document.querySelector("#iOpo").checked = false;
+    document.querySelector("#iLev").checked = false;
+    document.querySelector("#iDef").checked = false;
+    document.querySelector("#iAt").focus();
+}
 
-function criarLista(nome, funcao){
-    c = 0;
 
-    var container = document.querySelector("div#nomesCheck");
+function posAtleta(nome){ // menu para seleção de posição em quadra (Pn)
+    var posQuad = "";
+    var caixa = document.querySelector("#forms");
+    
+    caixa.innerHTML += "Informe a posição do atleta em quadra"
+    var p1 = document.createElement("input");
+    var p2 = document.createElement("input");
+    var p3 = document.createElement("input");
+    var p4 = document.createElement("input");
+    var p5 = document.createElement("input");
+    var p6 = document.createElement("input");
+    var p7 = document.createElement("input");
+    
+    p1.value = "P1";
+    p2.value = "P2";
+    p3.value = "P3";
+    p4.value = "P4";
+    p5.value = "P5";
+    p6.value = "P6";
+    p7.value = "reserva";
+        
+        
+    [p1, p2, p3, p4, p5, p6, p7].forEach (p =>{
+        p.id = "i" + p;
+        p.type = "button";
+        caixa.appendChild(document.createElement("br"));
+        caixa.appendChild(p);
+        p.addEventListener("click", function(){
+            posInicial(nome, caixa, posQuad, p)
+        });
+    });
+    
+    return posQuad;
+}
+
+
+function posInicial(nome, caixa, posQuad, p){
+    posQuad = p.value;
+    
+    caixa.innerHTML = "";
+    
+    i = 0;
+    while (i <= 6){
+        if (posQuad == "P"+ i){
+            pos = "titular";
+        } else if (posQuad == "reserva") {
+            pos = "reserva";
+        }
+        
+        i++
+    }
+    
+    criarLista(pos, nome, funcao, posQuad);
+    return posQuad;
+}
+
+
+function criarLista(pos, nome, funcao, posQuad){
+    var atTit = document.querySelector("div#titular");
+    var atRes = document.querySelector("div#reserva");
+
     var button = document.createElement("input");
-
     button.type = "button";
     button.value = nome;
     button.id = ("i" + nome + c);
     
     c++;
 
-    container.appendChild(button);
-    container.appendChild(document.createElement("br"));
-
+    if (pos == "titular"){
+        atTit.appendChild(button);
+    } else if (pos == "reserva"){
+        atRes.appendChild(button);
+    }
+    
     button.addEventListener("click", function(){
             butOptions(nome, funcao)
     });
 }
-    
+
 function butOptions(nome, funcao){
     var acao = document.querySelector("#acao");
     acao.innerHTML = "";
