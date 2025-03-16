@@ -202,12 +202,12 @@ function posInicial(nome, caixa, posQuad, p){
         i++
     }
     
-    criarLista(pos, nome, funcao, posQuad);
+    criarLista(pos, nome, funcao);
     return posQuad;
 }
 
 
-function criarLista(pos, nome, funcao, posQuad){
+function criarLista(pos, nome, funcao){
     var atTit = document.querySelector("div#titular");
     var atRes = document.querySelector("div#reserva");
 
