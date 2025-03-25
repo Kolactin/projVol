@@ -202,27 +202,35 @@ function posInicial(nome, caixa, posQuad, p){
         i++
     }
     
-    criarLista(pos, nome, funcao);
+    criarLista(posQuad, pos, nome, funcao);
     return posQuad;
 }
 
 
-function criarLista(pos, nome, funcao){
-    var atTit = document.querySelector("div#titular");
-    var atRes = document.querySelector("div#reserva");
+function criarLista(posQuad, pos, nome, funcao){
+    var atRes = document.querySelector("#reserva")
 
     var button = document.createElement("input");
     button.type = "button";
     button.value = nome;
     button.id = ("i" + nome + c);
     
-    c++;
-
+    
     if (pos == "titular"){
-        atTit.appendChild(button);
-    } else if (pos == "reserva"){
+        i = 1;
+        
+        while (i <= 6){
+            if (posQuad == "P"+ i){
+                var P = document.querySelector("#P"+ i);
+                P.appendChild(button);
+            }
+            i++;
+        } 
+    }  else{
         atRes.appendChild(button);
     }
+
+    c++;
     
     button.addEventListener("click", function(){
             butOptions(nome, funcao)
