@@ -233,15 +233,15 @@ function criarLista(posQuad, pos, nome, funcao){
     c++;
     
     button.addEventListener("click", function(){
-            butOptions(nome, funcao)
+            butOptions(nome, funcao, pos, posQuad, button)
     });
 }
 
-function butOptions(nome, funcao){
+function butOptions(nome, funcao, pos){
     var acao = document.querySelector("#acao");
     acao.innerHTML = "";
 
-    if (funcao === "central" || funcao === "oposto") {
+    if ((funcao === "central" || funcao === "oposto") && pos === "titular") {
 
         var a1 = document.createElement("input");
         var a2 = document.createElement("input");
@@ -266,7 +266,7 @@ function butOptions(nome, funcao){
         });
     } 
 
-    if (funcao === "ponteiro"){
+    if (funcao === "ponteiro" && pos === "titular"){
         var a1 = document.createElement("input");
         var a2 = document.createElement("input");
         var a3 = document.createElement("input");
@@ -303,7 +303,7 @@ function butOptions(nome, funcao){
         });
     }
     
-    if(funcao == "levantador"){
+    if(funcao == "levantador" && pos === "titular"){
 
             var lev1 = document.createElement("input");
             var lev2 = document.createElement("input");
@@ -342,7 +342,7 @@ function butOptions(nome, funcao){
             });
         } 
         
-        if(funcao == "libero"){
+        if(funcao == "libero" && pos === "titular"){
 
             var lib1 = document.createElement("input");
             var lib2 = document.createElement("input");
@@ -372,7 +372,34 @@ function butOptions(nome, funcao){
                 levantamento(nome, funcao);
             });
         }
+
+        if (pos === "reserva"){
+            var res = document.createElement("input");
+            res.type = "button";
+            
+            res.value = ("SUBSTITUIR " + nome);
+
+            acao.appendChild(res);
+
+            res.addEventListener("click", function(){
+                subs(nome, funcao, posQuad, button);
+            })
+        }
     }
+
+/*
+function subs(nome, funcao, posQuad, button){
+    var acao = document.querySelector("#acao");
+    var atletaTit = "";
+    var atletaRes = document.querySelector("#i" + nome + c);
+    
+    acao.innerHTML += "Informe a posição que o atleta irá assumir"
+    for (i = 1; i <= 6; i++){
+        if (posQuad == "P" + i);
+
+    }
+}
+*/
 
 function ataque(nome, funcao){
     var idDaTabela = "i" + nome + funcao;
