@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
         form.reset(); nameInput.focus();
     };
 
+    // ===================================================================
+    // FUNÇÃO DE SUBSTITUIÇÃO ATUALIZADA
+    // ===================================================================
     const initiateSubstitution = (reservePlayerId) => {
         const reservePlayer = players.find(p => p.id === reservePlayerId);
         if (!reservePlayer) return;
@@ -80,8 +83,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!starterPlayer) {
             alert(`Não há jogador na posição ${targetPosition}.`); return;
         }
+
+        // NOVO: Cria a descrição da substituição para a timeline
+        const substitutionDescription = `⇄ Substituição: ${reservePlayer.name} (entra) ↔ ${starterPlayer.name} (sai)`;
+        
+        // Executa a troca
         starterPlayer.posicao = 'Reserva';
         reservePlayer.posicao = targetPosition;
+
+        // NOVO: Adiciona o evento de substituição na timeline
+        addTimelineEntry(substitutionDescription);
+        
         renderAll();
     };
 
