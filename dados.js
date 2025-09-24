@@ -19,31 +19,90 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAddFora = document.getElementById('btn-add-fora');
     const btnRemoveLast = document.getElementById('btn-remove-last');
     const btnResetPlacar = document.getElementById('btn-reset-placar');
+    const btnSaveGame = document.getElementById('btn-save-game');
+    const btnLoadGame = document.getElementById('btn-load-game');
+    const fileLoader = document.getElementById('file-loader');
+    const btnNewGame = document.getElementById('btn-new-game');
     
     // --- DEFINIÇÃO DAS AÇÕES POR FUNÇÃO ---
     const playerActions = {
         atacante: [
-            { label: 'A ✓', type: 'success', stat: 'ataques', substat: 'ataquesCertos', description: 'Ataque Certo' },
-            { label: 'A ⨉', type: 'error', stat: 'ataques', description: 'Ataque errado' },
-            { label: 'B ✓', type: 'success', stat: 'bloqueios', substat: 'bloqueiosCertos', description: 'Bloqueio' },
-            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Bom saque' },
-            { label: 'S ⨉', type: 'error', stat: 'saques', description: 'Erro de Saque' },
-            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Bom passe' },
+            { label: 'A ✓', type: 'success', stat: 'ataques', substat: 'ataquesCertos', description: 'Ataque Certo' }, { label: 'A ⨉', type: 'error', stat: 'ataques', description: 'Ataque errado' },
+            { label: 'B ✓', type: 'success', stat: 'bloqueios', substat: 'bloqueiosCertos', description: 'Bloqueio' }, { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Bom saque' },
+            { label: 'S ⨉', type: 'error', stat: 'saques', description: 'Erro de Saque' }, { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Bom passe' },
             { label: 'P ⨉', type: 'error', stat: 'passes', description: 'Erro de Passe' },
         ],
         levantador: [
-            { label: 'L ✓', type: 'success', stat: 'levantamentos', substat: 'levantamentosCertos', description: 'Bom levantamento' },
-            { label: 'L ⨉', type: 'error', stat: 'levantamentos', description: 'Levantamento ruim' },
-            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Bom saque' },
-            { label: 'S ⨉', type: 'error', stat: 'saques', description: 'Erro de Saque' },
+            { label: 'L ✓', type: 'success', stat: 'levantamentos', substat: 'levantamentosCertos', description: 'Bom levantamento' }, { label: 'L ⨉', type: 'error', stat: 'levantamentos', description: 'Levantamento ruim' },
+            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Bom saque' }, { label: 'S ⨉', type: 'error', stat: 'saques', description: 'Erro de Saque' },
         ],
         libero: [
-            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Bom passe' },
-            { label: 'P ⨉', type: 'error', stat: 'passes', description: 'Passe ruim' },
+            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Bom passe' }, { label: 'P ⨉', type: 'error', stat: 'passes', description: 'Passe ruim' },
         ]
     };
 
+    // --- SALVAR E CARREGAR ESTADO ---
+    const saveState = () => {
+        const gameState = { players, scoreboardHistory, gameTimeline };
+        localStorage.setItem('voleiScoutState', JSON.stringify(gameState));
+    };
+
+    const loadState = () => {
+        const savedStateJSON = localStorage.getItem('voleiScoutState');
+        if (savedStateJSON) {
+            const savedState = JSON.parse(savedStateJSON);
+            players = savedState.players || [];
+            scoreboardHistory = savedState.scoreboardHistory || [];
+            gameTimeline = savedState.gameTimeline || [];
+        }
+    };
+
+    const exportGameToFile = () => {
+        const gameState = { players, scoreboardHistory, gameTimeline };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(gameState, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", `scout_volei_${new Date().toISOString().slice(0,10)}.json`);
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    };
+
+    const importGameFromFile = (event) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const loadedState = JSON.parse(e.target.result);
+                if (loadedState.players && loadedState.scoreboardHistory && loadedState.gameTimeline) {
+                    players = loadedState.players;
+                    scoreboardHistory = loadedState.scoreboardHistory;
+                    gameTimeline = loadedState.gameTimeline;
+                    saveState();
+                    renderAll();
+                    alert('Jogo carregado com sucesso!');
+                } else {
+                    alert('Arquivo inválido ou corrompido.');
+                }
+            } catch (error) {
+                alert('Erro ao ler o arquivo.');
+                console.error("Erro ao carregar o jogo:", error);
+            }
+        };
+        reader.readAsText(event.target.files[0]);
+    };
+
     // --- LÓGICA ---
+    const startNewGame = () => {
+        const confirmNewGame = confirm("Você tem certeza que quer apagar TODOS os jogadores e dados da partida? Esta ação é irreversível.");
+        if (confirmNewGame) {
+            players = [];
+            scoreboardHistory = [];
+            gameTimeline = [];
+            saveState();
+            renderAll();
+        }
+    };
+
     const handleAddPlayer = (event) => {
         event.preventDefault();
         const nameInput = document.getElementById('player-name-input');
@@ -60,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 levantamentos: 0, levantamentosCertos: 0, defesas: 0, defesasCertas: 0, bloqueios: 0, bloqueiosCertos: 0,
             }
         });
+        saveState();
         renderAll();
         form.reset(); nameInput.focus();
     };
@@ -87,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         starterPlayer.posicao = 'Reserva';
         reservePlayer.posicao = targetPosition;
         addTimelineEntry(substitutionDescription);
+        saveState();
         renderAll();
     };
 
@@ -97,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (substat) player.stats[substat]++;
         const actionDescription = `${description} de ${player.name} (${player.posicao})`;
         addTimelineEntry(actionDescription);
+        saveState();
         renderStatsTables();
     };
     
@@ -120,25 +182,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         addTimelineEntry(`>>> Ponto para ${team}! <<<`);
         scoreboardHistory.push(team);
+        saveState();
         renderScoreboard();
     };
 
     const removeLastScorePoint = () => {
-        const lastPoint = scoreboardHistory[scoreboardHistory.length - 1];
+        if (scoreboardHistory.length === 0) return;
+        const pointToRemove = scoreboardHistory[scoreboardHistory.length - 1];
+        const previousPoint = scoreboardHistory[scoreboardHistory.length - 2];
+        const shouldUndoRotation = (pointToRemove === 'Casa' && previousPoint === 'Fora');
         const lastRally = gameTimeline[gameTimeline.length - 1];
-        if (lastRally && lastRally.actions.some(action => action.includes(`Ponto para ${lastPoint}`))) {
+        if (lastRally && lastRally.actions.some(action => action.includes(`Ponto para ${pointToRemove}`))) {
             gameTimeline.pop();
         }
+        if (shouldUndoRotation) {
+            undoRotation();
+        }
         scoreboardHistory.pop();
-        renderScoreboard();
-        renderTimeline();
+        saveState();
+        renderAll();
     };
 
     const resetScoreboard = () => {
-        scoreboardHistory = [];
-        gameTimeline = [];
-        renderScoreboard();
-        renderTimeline();
+        const confirmReset = confirm("Tem certeza que deseja zerar o placar e a timeline? Os jogadores NÃO serão removidos.");
+        if (confirmReset) {
+            scoreboardHistory = [];
+            gameTimeline = [];
+            saveState();
+            renderAll();
+        }
     };
 
     const rotatePlayers = () => {
@@ -146,13 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
         players.forEach(player => {
             if (player.posicao.startsWith('P')) oldPositions[player.posicao] = player;
         });
-        if (Object.keys(oldPositions).length < 6) {
-            alert("É preciso ter 6 jogadores titulares em quadra para fazer o rodízio."); return;
-        }
+        if (Object.keys(oldPositions).length < 6) { return; }
         const playerInP5 = oldPositions['P5'];
-        if (playerInP5 && playerInP5.funcao === 'libero') {
-            alert('Ação inválida! O líbero está na P5 e não pode rotacionar para a P4 (ataque). Realize a substituição do líbero antes de fazer o rodízio.'); return;
-        }
+        if (playerInP5 && playerInP5.funcao === 'libero') { return; }
         if (oldPositions.P1) oldPositions.P1.posicao = 'P6';
         if (oldPositions.P2) oldPositions.P2.posicao = 'P1';
         if (oldPositions.P3) oldPositions.P3.posicao = 'P2';
@@ -160,7 +228,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (oldPositions.P5) oldPositions.P5.posicao = 'P4';
         if (oldPositions.P6) oldPositions.P6.posicao = 'P5';
         addTimelineEntry("--- Rodízio Realizado ---");
-        renderAll();
+        saveState();
+        renderRoster();
+    };
+    
+    const undoRotation = () => {
+        const currentPositions = {};
+        players.forEach(player => {
+            if (player.posicao.startsWith('P')) currentPositions[player.posicao] = player;
+        });
+        if (Object.keys(currentPositions).length < 6) return;
+        if (currentPositions.P2) currentPositions.P2.posicao = 'P1';
+        if (currentPositions.P3) currentPositions.P3.posicao = 'P2';
+        if (currentPositions.P4) currentPositions.P4.posicao = 'P3';
+        if (currentPositions.P5) currentPositions.P5.posicao = 'P4';
+        if (currentPositions.P6) currentPositions.P6.posicao = 'P5';
+        if (currentPositions.P1) currentPositions.P1.posicao = 'P6';
     };
 
     // --- RENDERIZAÇÃO ---
@@ -168,16 +251,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!startersBox || !reservesList) return;
         startersBox.innerHTML = '<h3>Titulares</h3>';
         reservesList.innerHTML = '';
-        for (let i = 1; i <= 6; i++) {
-            const pos = `P${i}`;
-            const player = players.find(p => p.posicao === pos);
-            const name = player ? `${player.name} (${player.funcao})` : '-';
-            const starterDiv = document.createElement('div');
-            starterDiv.className = 'starter-player';
-            starterDiv.dataset.position = pos;
-            starterDiv.innerHTML = `<p><strong>${pos}:</strong> <span>${name}</span></p><div class="actions"></div>`;
-            startersBox.appendChild(starterDiv);
-            if (player) {
+        const starters = players.filter(p => p.posicao.startsWith('P')).sort((a, b) => a.posicao.localeCompare(b.posicao));
+        if (starters.length > 0) {
+            starters.forEach(player => {
+                const starterDiv = document.createElement('div');
+                starterDiv.className = 'starter-player';
+                starterDiv.innerHTML = `<div class="starter-player-info">${player.name}<span>(${player.funcao} - ${player.posicao})</span></div><div class="actions"></div>`;
+                startersBox.appendChild(starterDiv);
                 const actionsContainer = starterDiv.querySelector('.actions');
                 let actionGroup = ['central', 'ponteiro', 'oposto'].includes(player.funcao) ? 'atacante' : player.funcao;
                 playerActions[actionGroup].forEach(action => {
@@ -191,7 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (action.description) button.dataset.description = action.description;
                     actionsContainer.appendChild(button);
                 });
-            }
+            });
+        } else {
+            startersBox.innerHTML += `<p class="timeline-empty">Nenhum titular definido.</p>`;
         }
         players.filter(p => p.posicao === 'Reserva').forEach(player => {
             const reserveElement = document.createElement('div');
@@ -281,7 +363,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if(btnAddFora) btnAddFora.addEventListener('click', () => addScorePoint('Fora'));
     if(btnRemoveLast) btnRemoveLast.addEventListener('click', removeLastScorePoint);
     if(btnResetPlacar) btnResetPlacar.addEventListener('click', resetScoreboard);
+    if(btnSaveGame) btnSaveGame.addEventListener('click', exportGameToFile);
+    if(btnLoadGame) btnLoadGame.addEventListener('click', () => fileLoader.click());
+    if(fileLoader) fileLoader.addEventListener('change', importGameFromFile);
+    if(btnNewGame) btnNewGame.addEventListener('click', startNewGame);
 
     // --- INICIALIZAÇÃO ---
+    loadState();
     renderAll();
 });
