@@ -65,9 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
         form.reset(); nameInput.focus();
     };
 
-    // ===================================================================
-    // FUNÇÃO DE SUBSTITUIÇÃO ATUALIZADA
-    // ===================================================================
     const initiateSubstitution = (reservePlayerId) => {
         const reservePlayer = players.find(p => p.id === reservePlayerId);
         if (!reservePlayer) return;
@@ -79,21 +76,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!['P1', 'P2', 'P3', 'P4', 'P5', 'P6'].includes(targetPosition)) {
             alert('Posição inválida.'); return;
         }
+
+        const frontRowPositions = ['P4', 'P3', 'P2'];
+        if (reservePlayer.funcao === 'libero' && frontRowPositions.includes(targetPosition)) {
+            alert('Ação inválida! O líbero não pode entrar em uma posição de ataque (P4, P3 ou P2).');
+            return;
+        }
+
         const starterPlayer = players.find(p => p.posicao === targetPosition);
         if (!starterPlayer) {
             alert(`Não há jogador na posição ${targetPosition}.`); return;
         }
-
-        // NOVO: Cria a descrição da substituição para a timeline
-        const substitutionDescription = `⇄ Substituição: ${reservePlayer.name} (entra) ↔ ${starterPlayer.name} (sai)`;
         
-        // Executa a troca
+        const substitutionDescription = `⇄ Substituição: ${reservePlayer.name} (entra) ↔ ${starterPlayer.name} (sai)`;
         starterPlayer.posicao = 'Reserva';
         reservePlayer.posicao = targetPosition;
-
-        // NOVO: Adiciona o evento de substituição na timeline
         addTimelineEntry(substitutionDescription);
-        
         renderAll();
     };
 
@@ -152,6 +150,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (Object.keys(oldPositions).length < 6) {
             alert("É preciso ter 6 jogadores titulares em quadra para fazer o rodízio."); return;
         }
+        
+        const playerInP5 = oldPositions['P5'];
+        if (playerInP5 && playerInP5.funcao === 'libero') {
+            alert('Ação inválida! O líbero está na P5 e não pode rotacionar para a P4 (ataque). Realize a substituição do líbero antes de fazer o rodízio.');
+            return;
+        }
+
         if (oldPositions.P1) oldPositions.P1.posicao = 'P6';
         if (oldPositions.P2) oldPositions.P2.posicao = 'P1';
         if (oldPositions.P3) oldPositions.P3.posicao = 'P2';
