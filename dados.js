@@ -1,10 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- ESTADO DA APLICAÇÃO ---
     let players = [];
     let scoreboardHistory = [];
     let gameTimeline = [];
 
-    // --- ELEMENTOS DO DOM ---
     const form = document.getElementById('add-player-form');
     const startersBox = document.querySelector('.starters-box');
     const reservesList = document.getElementById('reserves-list');
@@ -25,29 +23,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerActions = {
         atacante: [
             { label: 'A ✓', type: 'success', stat: 'ataques', substat: 'ataquesCertos', description: 'Ataque Certo' },
-            { label: 'A ⨉', type: 'error', stat: 'ataques', description: 'Erro de Ataque' },
-            { label: 'B ✓', type: 'success', stat: 'bloqueios', substat: 'bloqueiosCertos', description: 'Ponto de Bloqueio' },
-            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Ponto de Saque (Ace)' },
+            { label: 'A ⨉', type: 'error', stat: 'ataques', description: 'Ataque errado' },
+            { label: 'B ✓', type: 'success', stat: 'bloqueios', substat: 'bloqueiosCertos', description: 'Bloqueio' },
+            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Bom saque' },
             { label: 'S ⨉', type: 'error', stat: 'saques', description: 'Erro de Saque' },
-            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Passe Perfeito' },
+            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Bom passe' },
             { label: 'P ⨉', type: 'error', stat: 'passes', description: 'Erro de Passe' },
         ],
         levantador: [
-            { label: 'L ✓', type: 'success', stat: 'levantamentos', substat: 'levantamentosCertos', description: 'Levantamento Preciso' },
-            { label: 'L ⨉', type: 'error', stat: 'levantamentos', description: 'Erro de Levantamento' },
-            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Ponto de Saque (Ace)' },
+            { label: 'L ✓', type: 'success', stat: 'levantamentos', substat: 'levantamentosCertos', description: 'Bom levantamento' },
+            { label: 'L ⨉', type: 'error', stat: 'levantamentos', description: 'Levantamento ruim' },
+            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Bom saque' },
             { label: 'S ⨉', type: 'error', stat: 'saques', description: 'Erro de Saque' },
         ],
         libero: [
-            { label: 'D ✓', type: 'success', stat: 'defesas', substat: 'defesasCertas', description: 'Defesa Incrível' },
-            { label: 'D ⨉', type: 'error', stat: 'defesas', description: 'Erro de Defesa' },
-            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Passe Perfeito' },
-            { label: 'P ⨉', type: 'error', stat: 'passes', description: 'Erro de Passe' },
+            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Bom passe' },
+            { label: 'P ⨉', type: 'error', stat: 'passes', description: 'Passe ruim' },
         ]
     };
 
     // --- LÓGICA ---
-    const handleAddPlayer = (event) => { /* ... (código sem alterações) ... */ 
+    const handleAddPlayer = (event) => {
         event.preventDefault();
         const nameInput = document.getElementById('player-name-input');
         const name = nameInput.value.trim();
@@ -67,8 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
         form.reset(); nameInput.focus();
     };
 
-    const initiateSubstitution = (reservePlayerId) => { /* ... (código sem alterações) ... */ 
-        const reservePlayer = players.find(p => p.id === reservePlayerId);
+    const initiateSubstitution = (reservePlayerId) => { 
+    const reservePlayer = players.find(p => p.id === reservePlayerId);
         if (!reservePlayer) return;
         const starters = players.filter(p => p.posicao.startsWith('P')).map(s => `${s.posicao}: ${s.name}`).join('\n');
         const promptMessage = `Substituir com ${reservePlayer.name}.\n\nTitulares:\n${starters}\n\nDigite a posição (ex: P1):`;
@@ -87,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderAll();
     };
 
-    const updatePlayerStat = (playerId, stat, substat, description) => { /* ... (código sem alterações) ... */ 
+    const updatePlayerStat = (playerId, stat, substat, description) => { 
         const player = players.find(p => p.id === playerId);
         if (!player) return;
         player.stats[stat]++;
@@ -97,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderStatsTables();
     };
     
-    const addTimelineEntry = (description) => { /* ... (código sem alterações) ... */ 
+    const addTimelineEntry = (description) => { 
         const casaPontos = scoreboardHistory.filter(p => p === 'Casa').length;
         const foraPontos = scoreboardHistory.filter(p => p === 'Fora').length;
         const currentScore = `${casaPontos} x ${foraPontos}`;
@@ -116,11 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
         renderScoreboard();
     };
 
-    // ===================================================================
-    // FUNÇÕES ALTERADAS
-    // ===================================================================
     const removeLastScorePoint = () => {
-        const lastPoint = scoreboardHistory[scoreboardHistory.length - 1];
+        const lastPoint = scoreboardHistory[scoreboardHistory.length - 1]; 
         // Remove a última entrada da timeline somente se ela foi uma marcação de ponto
         const lastRally = gameTimeline[gameTimeline.length - 1];
         if (lastRally && lastRally.actions.some(action => action.includes(`Ponto para ${lastPoint}`))) {
@@ -129,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         scoreboardHistory.pop(); // Remove o ponto do placar
         renderScoreboard();
-        renderTimeline(); // Renderiza a timeline para refletir a remoção
+        renderTimeline(); // Renderiza a timeline atualizada
     };
 
     const resetScoreboard = () => {
@@ -140,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- RENDERIZAÇÃO ---
-    const renderRoster = () => { /* ... (código sem alterações) ... */ 
+    const renderRoster = () => { 
         if (!startersBox || !reservesList) return;
         startersBox.innerHTML = '<h3>Titulares</h3>';
         reservesList.innerHTML = '';
@@ -178,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const renderStatsTables = () => { /* ... (código sem alterações) ... */ 
+    const renderStatsTables = () => { 
         if (!tableBodies.ata || !tableBodies.lev || !tableBodies.def) return;
         tableBodies.ata.innerHTML = ''; tableBodies.lev.innerHTML = ''; tableBodies.def.innerHTML = '';
         players.forEach(player => {
@@ -210,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const renderTimeline = () => { /* ... (código sem alterações) ... */ 
+    const renderTimeline = () => { 
         if (!timelineFeed) return;
         if (gameTimeline.length === 0) {
             timelineFeed.innerHTML = `<p class="timeline-empty">Nenhum ponto registrado ainda.</p>`; return;
@@ -227,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
-    const renderScoreboard = () => { /* ... (código sem alterações) ... */ 
+    const renderScoreboard = () => {  
         if (!placarContainer) return;
         placarContainer.innerHTML = '';
         scoreboardHistory.forEach(point => {
