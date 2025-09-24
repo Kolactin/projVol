@@ -140,10 +140,7 @@ const placar = document.getElementById("placar");
 let historico = [];
 
 function atualizarPlacar() {
-  // Limpa todos os quadrados
   placar.innerHTML = "";
-
-  // Cria um quadrado para cada ponto no histórico
   historico.forEach(time => {
     const q = document.createElement("div");
     q.classList.add("quadrado");
@@ -155,6 +152,16 @@ function atualizarPlacar() {
 
 function addPonto(time) {
   historico.push(time);
+  atualizarPlacar();
+}
+
+function removerUltimoPonto() {
+  historico.pop();
+  atualizarPlacar();
+}
+
+function zerarPlacar() {
+  historico = [];
   atualizarPlacar();
 }
 
