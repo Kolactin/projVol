@@ -1,99 +1,336 @@
 @charset "UTF-8";
 
-*{
-    padding: 0px;
-}
-body{
-    background-color: rgb(29, 29, 39);
-    color: white;
-}
-h1{
-    text-align: center;
+/* 1. Importação de Fonte e Definição de Variáveis Globais */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+    /* Paleta de Cores */
+    --color-background: hsl(232, 28%, 12%); /* Fundo principal (azul bem escuro) */
+    --color-surface: hsl(232, 28%, 19%);   /* Cor dos 'cards' */
+    --color-primary: hsl(220, 80%, 60%);   /* Azul principal para botões e destaques */
+    --color-primary-hover: hsl(220, 80%, 70%);
+    --color-danger: hsl(350, 70%, 55%);
+    --color-danger-hover: hsl(350, 70%, 65%);
+    --color-secondary: hsl(232, 10%, 40%);
+    --color-secondary-hover: hsl(232, 10%, 50%);
+    --color-text-primary: hsl(0, 0%, 95%);    /* Texto principal (quase branco) */
+    --color-text-secondary: hsl(0, 0%, 65%); /* Texto secundário (cinza claro) */
+    --color-border: hsl(232, 28%, 30%);
+    
+    --color-score-home: var(--color-primary);
+    --color-score-away: var(--color-danger);
+
+    /* Tipografia */
+    --font-family: 'Poppins', sans-serif;
+
+    /* Outros */
+    --border-radius: 8px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-h3{
-    font-size: larger;
-    text-align: center;
-    margin: 10px;
-    padding: 10px;
-    border: 2px solid white;
-    border-radius: 10px;
-    background-color: rgb(50, 50, 60);
+/* 2. Reset e Estilos Globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-div button{
-    background-color: rgb(70, 70, 80);
-    margin: 5px;
-    color: white;
-    border: 1px solid white;
-    border-radius: 5px;
-    padding: 10px;
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+h1 { 
+    text-align: center;
+    padding: 2rem 0;
+    font-size: 2.5rem;
+}
+
+/* 3. Layout Principal */
+.container {
+    width: 95%;
+    max-width: 1000px;
+    margin: 0 auto 2rem auto;
+}
+
+.card {
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius);
+    padding: 1.5rem 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border);
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+}
+
+/* 4. Formulário */
+#add-player-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group p {
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-bottom: 0;
+}
+
+.form-group input[type="text"] {
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-family: var(--font-family);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input[type="text"]:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px hsla(220, 80%, 60%, 0.3);
+}
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    padding-top: 0.5rem;
+}
+
+.checkbox-group label {
     cursor: pointer;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-table{
-    margin: 10px;
-}
-
-thead > tr > th { /* Criar cabeçalho fixo */
-    position: sticky;
-    top: -1px;
-    background-color: lightgray;
-    color: black;
-}   
-
-td{
-    text-align: center;
-    vertical-align: center;
-}
-
-div{
-    padding: 5px;
-    margin: 5px;
+/* 5. Botões */
+.button-group {
     display: flex;
     justify-content: center;
-    align-items: center;
-    flex-flow: column nowrap;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1rem;
 }
 
-fieldset, #acao, #opcoes{
-    margin: 5px;
-    padding: 5px;
+.btn {
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: var(--font-family);
+    transition: background-color 0.2s, transform 0.1s;
+    text-align: center;
 }
 
-button, #iAcao{
-    margin: 0px 5px;
+.btn:hover {
+    transform: translateY(-2px);
 }
 
-#titular, #reserva, #acao, #opcoes, #iAcao{
-    margin: 0px 10px;
-    padding: 0px 10px;
-    display: flex;
-    flex-flow: row nowrap;
+.btn:active {
+    transform: translateY(0);
 }
 
-#nomesCheck button{
-    margin: 0px 5px;
+.btn-primary {
+    background-color: var(--color-primary);
+}
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
 }
 
+.btn-secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-text-primary);
+}
+.btn-secondary:hover {
+    background-color: var(--color-secondary-hover);
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+}
+.btn-danger:hover {
+    background-color: var(--color-danger-hover);
+}
+
+
+/* 6. Placar */
 .placar {
-  display: flex;    
-  flex-direction: row;
-  gap: 2px;
-  margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 1.5rem;
+    min-height: 20px;
 }
 
 .quadrado {
-  width: 14px;
-  height: 14px;
-  border: 1px solid #333;
-  background-color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
 }
 
 .casa {
-  background-color: blue;
+    background-color: var(--color-score-home);
 }
 
 .fora {
-  background-color: red;
+    background-color: var(--color-score-away);
+}
+
+/* 7. Tabelas */
+.table-container {
+    overflow-x: auto; /* Garante rolagem em telas pequenas */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+}
+
+thead th {
+    background-color: hsl(232, 28%, 25%);
+    font-weight: 600;
+    font-size: 1rem;
+    position: sticky;
+    top: 0;
+    border-bottom: 2px solid var(--color-border);
+}
+
+/* Efeito Zebra para melhor legibilidade */
+tbody tr:nth-child(even) {
+    background-color: hsl(232, 28%, 15%);
+}
+
+tbody tr:hover {
+    background-color: hsl(232, 28%, 22%);
+}
+
+td:first-child, th:first-child {
+    text-align: left;
+}
+
+.position-group label {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.position-group input[type="radio"]:checked + label {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+.position-group input[type="radio"] {
+    display: none; /* Esconde a bolinha do radio button */
+}
+
+.roster-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.starters-box, .reserves-box {
+    flex: 1;
+    min-width: 250px;
+}
+
+.starters-box p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.starters-box p span {
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+#reserves-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.reserve-player {
+    background-color: var(--color-background);
+    padding: 8px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.clickable-reserve {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.clickable-reserve:hover {
+    background-color: var(--color-secondary); /* Destaca o reserva ao passar o mouse */
+}
+
+.starter-player .actions {
+    display: flex;
+    gap: 6px;
+}
+
+.action-btn {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.btn-success {
+    background-color: #28a745; /* Verde para acerto */
+    color: white;
+}
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-error {
+    background-color: #dc3545; /* Vermelho para erro */
+    color: white;
+}
+.btn-error:hover {
+    background-color: #c82333;
 }

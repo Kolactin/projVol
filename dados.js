@@ -1,182 +1,219 @@
-var c = 0;
-var funcao = "";
-var pos = "";
+document.addEventListener('DOMContentLoaded', () => {
+    // --- ESTADO DA APLICAÇÃO ---
+    let players = [];
+    let scoreboardHistory = [];
 
-function add() {
-    var nome = document.querySelector("input#iAt").value.trim();
-    var central = document.querySelector("#iCen").checked;
-    var ponteiro = document.querySelector("#iPon").checked;
-    var oposto = document.querySelector("#iOpo").checked;
-    var libero = document.querySelector("#iDef").checked;
-    var levantador = document.querySelector("#iLev").checked;
+    // --- ELEMENTOS DO DOM ---
+    const form = document.getElementById('add-player-form');
+    const startersBox = document.querySelector('.starters-box');
+    const reservesList = document.getElementById('reserves-list');
+    const tableBodies = {
+        ata: document.querySelector('#table-ata tbody'),
+        lev: document.querySelector('#table-lev tbody'),
+        def: document.querySelector('#table-def tbody'),
+    };
+    const placarContainer = document.getElementById('placar-container');
+    const btnAddCasa = document.getElementById('btn-add-casa');
+    const btnAddFora = document.getElementById('btn-add-fora');
+    const btnRemoveLast = document.getElementById('btn-remove-last');
+    const btnResetPlacar = document.getElementById('btn-reset-placar');
+    const btnExportExcel = document.getElementById('btn-export-excel');
+    
+    // --- DEFINIÇÃO DAS AÇÕES POR FUNÇÃO ---
+    const playerActions = {
+        atacante: [
+            { label: 'A ✓', type: 'success', stat: 'ataques', substat: 'ataquesCertos', title: 'Ataque Certo' },
+            { label: 'A ⨉', type: 'error', stat: 'ataques', title: 'Erro de Ataque' },
+            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', title: 'Saque Certo' },
+            { label: 'S ⨉', type: 'error', stat: 'saques', title: 'Erro de Saque' },
+            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', title: 'Passe Certo' },
+            { label: 'P ⨉', type: 'error', stat: 'passes', title: 'Erro de Passe' },
+        ],
+        levantador: [
+            { label: 'L ✓', type: 'success', stat: 'levantamentos', substat: 'levantamentosCertos', title: 'Levantamento Certo' },
+            { label: 'L ⨉', type: 'error', stat: 'levantamentos', title: 'Erro de Levantamento' },
+            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', title: 'Saque Certo' },
+            { label: 'S ⨉', type: 'error', stat: 'saques', title: 'Erro de Saque' },
+        ],
+        libero: [
+            { label: 'D ✓', type: 'success', stat: 'defesas', substat: 'defesasCertas', title: 'Defesa Certa' },
+            { label: 'D ⨉', type: 'error', stat: 'defesas', title: 'Erro de Defesa' },
+            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', title: 'Passe Certo' },
+            { label: 'P ⨉', type: 'error', stat: 'passes', title: 'Erro de Passe' },
+        ]
+    };
 
-    if (!nome) {
-        alert("Por favor, informe um nome");
-        return;
-    }
+    // --- LÓGICA ---
+    const handleAddPlayer = (event) => {
+        event.preventDefault();
+        const nameInput = document.getElementById('player-name-input');
+        const name = nameInput.value.trim();
+        const functionRadio = document.querySelector('input[name="funcao"]:checked');
+        const positionRadio = document.querySelector('input[name="posicao"]:checked');
+        if (!name || !functionRadio || !positionRadio) {
+            alert('Por favor, preencha nome, função e posição inicial.'); return;
+        }
+        players.push({
+            id: `player-${Date.now()}`, name, funcao: functionRadio.value, posicao: positionRadio.value,
+            stats: {
+                ataques: 0, ataquesCertos: 0, saques: 0, saquesCertos: 0, passes: 0, passesCertos: 0,
+                levantamentos: 0, levantamentosCertos: 0, defesas: 0, defesasCertas: 0,
+            }
+        });
+        renderAll();
+        form.reset();
+        nameInput.focus();
+    };
 
-    if (central) funcao = "central";
-    else if (oposto) funcao = "oposto";
-    else if (ponteiro) funcao = "ponteiro";
-    else if (levantador) funcao = "levantador";
-    else if (libero) funcao = "libero";
+    const initiateSubstitution = (reservePlayerId) => {
+        const reservePlayer = players.find(p => p.id === reservePlayerId);
+        if (!reservePlayer) return;
+        const starters = players.filter(p => p.posicao.startsWith('P'));
+        const starterOptionsText = starters.map(s => `${s.posicao}: ${s.name}`).join('\n');
+        const promptMessage = `Substituir com ${reservePlayer.name}.\n\nTitulares:\n${starterOptionsText}\n\nDigite a posição a substituir (ex: P1):`;
+        const targetPositionInput = prompt(promptMessage);
+        if (!targetPositionInput) return;
+        const targetPosition = targetPositionInput.trim().toUpperCase();
+        if (!['P1', 'P2', 'P3', 'P4', 'P5', 'P6'].includes(targetPosition)) {
+            alert('Posição inválida.'); return;
+        }
+        const starterPlayer = players.find(p => p.posicao === targetPosition);
+        if (!starterPlayer) {
+            alert(`Nenhum jogador na posição ${targetPosition}.`); return;
+        }
+        starterPlayer.posicao = 'Reserva';
+        reservePlayer.posicao = targetPosition;
+        renderAll();
+    };
 
-    if (!funcao) return;
+    const updatePlayerStat = (playerId, stat, substat) => {
+        const player = players.find(p => p.id === playerId);
+        if (!player) return;
+        player.stats[stat]++;
+        if (substat) player.stats[substat]++;
+        renderStatsTables();
+    };
 
-    if (funcao === "central" || funcao === "oposto" || funcao === "ponteiro") {
-        criarLinhaAtaque(nome, funcao);
-    } else if (funcao === "levantador") {
-        criarLinhaLev(nome, funcao);
-    } else if (funcao === "libero") {
-        criarLinhaDef(nome, funcao);
-    }
+    // --- RENDERIZAÇÃO ---
+    const renderRoster = () => {
+        if (!startersBox || !reservesList) return;
+        startersBox.innerHTML = '<h3>Titulares</h3>'; // Limpa e recria o cabeçalho
+        reservesList.innerHTML = '';
+        
+        // Gera os 6 slots de titulares, preenchendo com jogadores ou deixando em branco
+        for (let i = 1; i <= 6; i++) {
+            const pos = `P${i}`;
+            const player = players.find(p => p.posicao === pos);
+            const name = player ? `${player.name} (${player.funcao})` : '-';
 
-    posAtleta(nome);
+            const starterDiv = document.createElement('div');
+            starterDiv.className = 'starter-player';
+            starterDiv.dataset.position = pos;
+            starterDiv.innerHTML = `<p><strong>${pos}:</strong> <span>${name}</span></p><div class="actions"></div>`;
+            startersBox.appendChild(starterDiv);
 
-    // reset checkboxes e input
-    document.querySelectorAll("#iCen, #iPon, #iOpo, #iLev, #iDef").forEach(chk => chk.checked = false);
-    document.querySelector("#iAt").value = "";
-    document.querySelector("#iAt").focus();
-}
+            if (player) {
+                const actionsContainer = starterDiv.querySelector('.actions');
+                let actionGroup = ['central', 'ponteiro', 'oposto'].includes(player.funcao) ? 'atacante' : player.funcao;
+                playerActions[actionGroup].forEach(action => {
+                    const button = document.createElement('button');
+                    button.className = `btn action-btn ${action.type === 'success' ? 'btn-success' : 'btn-error'}`;
+                    button.textContent = action.label;
+                    button.title = action.title;
+                    button.dataset.playerId = player.id;
+                    button.dataset.stat = action.stat;
+                    if (action.substat) button.dataset.substat = action.substat;
+                    actionsContainer.appendChild(button);
+                });
+            }
+        }
+        
+        // Gera a lista de reservas
+        players.filter(p => p.posicao === 'Reserva').forEach(player => {
+            const reserveElement = document.createElement('div');
+            reserveElement.className = 'reserve-player clickable-reserve';
+            reserveElement.dataset.playerId = player.id;
+            reserveElement.textContent = `${player.name} (${player.funcao})`;
+            reservesList.appendChild(reserveElement);
+        });
+    };
 
-/* ------------------------
-   Funções para cada tabela
--------------------------*/
-function criarLinhaAtaque(nome, funcao) {
-    var tabelAta = document.querySelector("#ata");
-    var novaLinha = tabelAta.insertRow();
-    novaLinha.id = "i" + nome + funcao;
+    // FUNÇÃO CORRIGIDA E COMPLETA PARA RENDERIZAR AS ESTATÍSTICAS
+    const renderStatsTables = () => {
+        Object.values(tableBodies).forEach(tbody => { if (tbody) tbody.innerHTML = ''; });
+        
+        players.forEach(player => {
+            const s = player.stats;
+            let rowHtml = '';
+            let targetTableBody = null;
 
-    var celNome = novaLinha.insertCell(0);
-    var celPos = novaLinha.insertCell(1);
-    var celAt = novaLinha.insertCell(2);
-    var celAtCer = novaLinha.insertCell(3);
-    var celNotAta = novaLinha.insertCell(4);
-    var celSaq = novaLinha.insertCell(5);
-    var celSaqCer = novaLinha.insertCell(6);
-    var celPas = novaLinha.insertCell(7);
-    var celPasCer = novaLinha.insertCell(8);
-    var celPerc = novaLinha.insertCell(9);
+            switch (player.funcao) {
+                case 'central': case 'ponteiro': case 'oposto':
+                    const totalAtacante = s.ataques + s.saques + s.passes;
+                    const acertosAtacante = s.ataquesCertos + s.saquesCertos + s.passesCertos;
+                    const percAtacante = totalAtacante > 0 ? ((acertosAtacante / totalAtacante) * 100).toFixed(1) + '%' : '0%';
+                    rowHtml = `<tr><td>${player.name}</td><td>${player.funcao}</td><td>${s.ataques}</td><td>${s.ataquesCertos}</td><td>X</td><td>${s.saques}</td><td>${s.saquesCertos}</td><td>${s.passes}</td><td>${s.passesCertos}</td><td>${percAtacante}</td></tr>`;
+                    targetTableBody = tableBodies.ata;
+                    break;
+                case 'levantador':
+                    const totalLev = s.levantamentos + s.saques;
+                    const acertosLev = s.levantamentosCertos + s.saquesCertos;
+                    const percLev = totalLev > 0 ? ((acertosLev / totalLev) * 100).toFixed(1) + '%' : '0%';
+                    rowHtml = `<tr><td>${player.name}</td><td>${s.levantamentos}</td><td>${s.levantamentosCertos}</td><td>X</td><td>${s.ataques}</td><td>${s.ataquesCertos}</td><td>${s.saques}</td><td>${s.saquesCertos}</td><td>${percLev}</td></tr>`;
+                    targetTableBody = tableBodies.lev;
+                    break;
+                case 'libero':
+                    const totalLibero = s.defesas + s.passes;
+                    const acertosLibero = s.defesasCertas + s.passesCertos;
+                    const percLibero = totalLibero > 0 ? ((acertosLibero / totalLibero) * 100).toFixed(1) + '%' : '0%';
+                    rowHtml = `<tr><td>${player.name}</td><td>${s.defesas}</td><td>${s.defesasCertas}</td><td>X</td><td>${s.passes}</td><td>${s.passesCertos}</td><td>${s.levantamentos}</td><td>${s.levantamentosCertos}</td><td>${percLibero}</td></tr>`;
+                    targetTableBody = tableBodies.def;
+                    break;
+            }
 
-    celNome.textContent = nome;
-    celPos.textContent = funcao;
-    celNotAta.textContent = "X";
+            if (targetTableBody && rowHtml) {
+                targetTableBody.innerHTML += rowHtml;
+            }
+        });
+    };
 
-    [celAt, celAtCer, celSaq, celSaqCer, celPas, celPasCer, celPerc].forEach(cel => {
-        cel.textContent = 0;
-        cel.addEventListener("input", () => atualizarPercentual(novaLinha));
+    const renderScoreboard = () => {
+        if (!placarContainer) return;
+        placarContainer.innerHTML = '';
+        scoreboardHistory.forEach(point => {
+            const square = document.createElement('div');
+            square.classList.add('quadrado');
+            square.classList.add(point === 'Casa' ? 'casa' : 'fora');
+            placarContainer.appendChild(square);
+        });
+    };
+
+    const renderAll = () => {
+        renderRoster();
+        renderStatsTables();
+        renderScoreboard();
+    };
+
+    // --- CONECTORES DE EVENTOS ---
+    if(form) form.addEventListener('submit', handleAddPlayer);
+    if(reservesList) reservesList.addEventListener('click', (event) => {
+        const reserveElement = event.target.closest('.clickable-reserve');
+        if (reserveElement) initiateSubstitution(reserveElement.dataset.playerId);
     });
-}
-
-function criarLinhaLev(nome, funcao) {
-    var tabela = document.querySelector("#lev");
-    var novaLinha = tabela.insertRow();
-    novaLinha.id = "i" + nome + funcao;
-
-    var celNome = novaLinha.insertCell(0);
-    var celTLev = novaLinha.insertCell(1);
-    var celLev = novaLinha.insertCell(2);
-    var celNotaLev = novaLinha.insertCell(3);
-    var celTAta = novaLinha.insertCell(4);
-    var celAta = novaLinha.insertCell(5);
-    var celTSaq = novaLinha.insertCell(6);
-    var celSaq = novaLinha.insertCell(7);
-    var celPerc = novaLinha.insertCell(8);
-
-    celNome.textContent = nome;
-    celNotaLev.textContent = "X";
-
-    [celTLev, celLev, celTAta, celAta, celTSaq, celSaq, celPerc].forEach(cel => {
-        cel.textContent = 0;
-        cel.addEventListener("input", () => atualizarPercentual(novaLinha));
-    });
-}
-
-function criarLinhaDef(nome, funcao) {
-    var tabela = document.querySelector("#def");
-    var novaLinha = tabela.insertRow();
-    novaLinha.id = "i" + nome + funcao;
-
-    var celNome = novaLinha.insertCell(0);
-    var celTDef = novaLinha.insertCell(1);
-    var celDef = novaLinha.insertCell(2);
-    var celNotaDef = novaLinha.insertCell(3);
-    var celTPas = novaLinha.insertCell(4);
-    var celPas = novaLinha.insertCell(5);
-    var celTLev = novaLinha.insertCell(6);
-    var celLev = novaLinha.insertCell(7);
-    var celPerc = novaLinha.insertCell(8);
-
-    celNome.textContent = nome;
-    celNotaDef.textContent = "X";
-
-    [celTDef, celDef, celTPas, celPas, celTLev, celLev, celPerc].forEach(cel => {
-        cel.textContent = 0;
-        cel.addEventListener("input", () => atualizarPercentual(novaLinha));
-    });
-}
-
-/* ------------------------
-   Atualização percentual
--------------------------*/
-function atualizarPercentual(linha) {
-    var valores = Array.from(linha.cells).map(c => parseInt(c.textContent) || 0);
-
-    // tenta identificar colunas (bem simplificado)
-    var totalTentativas = valores.slice(2, 8).reduce((a, b) => a + b, 0);
-    var totalCertos = valores[3] + valores[6] + valores[8] || 0;
-
-    var percentual = totalTentativas > 0 ? ((totalCertos / totalTentativas) * 100).toFixed(2) + "%" : "";
-    linha.cells[linha.cells.length - 1].textContent = percentual;
-}
-
-/* ------------------------
-   Placar
--------------------------*/
-
-const placar = document.getElementById("placar");
-
-// Histórico de pontos, cada item é 'Casa' ou 'Fora'
-let historico = [];
-
-function atualizarPlacar() {
-  placar.innerHTML = "";
-  historico.forEach(time => {
-    const q = document.createElement("div");
-    q.classList.add("quadrado");
-    if (time === "Casa") q.classList.add("casa");
-    if (time === "Fora") q.classList.add("fora");
-    placar.appendChild(q);
-  });
-}
-
-function addPonto(time) {
-  historico.push(time);
-  atualizarPlacar();
-}
-
-function removerUltimoPonto() {
-  historico.pop();
-  atualizarPlacar();
-}
-
-function zerarPlacar() {
-  historico = [];
-  atualizarPlacar();
-}
-
-
-/* ------------------------
-   Exportar Excel
--------------------------*/
-function exportarParaExcel() {
-    var wb = XLSX.utils.book_new();
-
-    [["ata", "Atacantes"], ["lev", "Levantadores"], ["def", "Liberos"]].forEach(([id, nome]) => {
-        var tabela = document.querySelector("#" + id);
-        var planilha = XLSX.utils.table_to_sheet(tabela);
-        XLSX.utils.book_append_sheet(wb, planilha, nome);
+    if(startersBox) startersBox.addEventListener('click', (event) => {
+        const actionButton = event.target.closest('.action-btn');
+        if (actionButton) {
+            const { playerId, stat, substat } = actionButton.dataset;
+            updatePlayerStat(playerId, stat, substat);
+        }
     });
 
-    XLSX.writeFile(wb, "resultado_scout.xlsx");
-}
+    const addScorePoint = (team) => { scoreboardHistory.push(team); renderScoreboard(); };
+    if(btnAddCasa) btnAddCasa.addEventListener('click', () => addScorePoint('Casa'));
+    if(btnAddFora) btnAddFora.addEventListener('click', () => addScorePoint('Fora'));
+    if(btnRemoveLast) btnRemoveLast.addEventListener('click', () => { scoreboardHistory.pop(); renderScoreboard(); });
+    if(btnResetPlacar) btnResetPlacar.addEventListener('click', () => { scoreboardHistory = []; renderScoreboard(); });
+
+    // --- INICIALIZAÇÃO ---
+    renderAll();
+});

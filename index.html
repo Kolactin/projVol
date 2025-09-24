@@ -3,170 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de scout - Vôlei</title>
+    <title>Sistema de Scout - Vôlei</title>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="shortcut icon" href="pictures/favicon.png" type="image/x-icon">
 </head>
 <body>
-    <header>
-        <h1>Sistema de scout</h1>
-    </header>
+    <header><h1>Sistema de Scout de Voleibol</h1></header>
 
     <main>
-        <div id="at_fun">
-            <form autocomplete="off">
-                <fieldset>
-                    <legend>Atleta + função</legend>
-                    <p>
-                        <label for="iAt">Inserir novo atleta:</label>
-                        <input type="text" name="At" id="iAt" placeholder="Digite um Nome">
-                    </p>
-                    <p>
-                        <input type="checkbox" name="cen" id="iCen"> <label for="iCen">Central</label> <br>
-                        <input type="checkbox" name="pon" id="iPon"> <label for="iPon">Ponteiro</label> <br>
-                        <input type="checkbox" name="opo" id="iOpo"> <label for="iOpo">Oposto</label> <br>
-                        <input type="checkbox" name="lev" id="iLev"> <label for="iLev">Levantador</label> <br>
-                        <input type="checkbox" name="def" id="iDef"> <label for="iDef">líbero</label>
-                    </p>
-                    <p id="forms"></p>
-                </fieldset>
-            </form>
-             <button onclick="add()">Adicionar atleta</button>
-        </div>
+        <section class="container">
+            <div class="card">
+                <h2 class="section-title">Adicionar Atleta</h2>
+                <form id="add-player-form" autocomplete="off">
+                    <div class="form-group"><label for="player-name-input">Nome do Atleta:</label><input type="text" id="player-name-input" placeholder="Digite um nome"></div>
+                    <div class="form-group"><p>Função:</p><div class="checkbox-group"><input type="radio" name="funcao" value="central" id="iCen"><label for="iCen">Central</label><input type="radio" name="funcao" value="ponteiro" id="iPon"><label for="iPon">Ponteiro</label><input type="radio" name="funcao" value="oposto" id="iOpo"><label for="iOpo">Oposto</label><input type="radio" name="funcao" value="levantador" id="iLev"><label for="iLev">Levantador</label><input type="radio" name="funcao" value="libero" id="iDef"><label for="iDef">Líbero</label></div></div>
+                    <div class="form-group"><p>Posição Inicial:</p><div class="checkbox-group position-group"><input type="radio" name="posicao" value="P1" id="iP1"><label for="iP1">P1</label><input type="radio" name="posicao" value="P2" id="iP2"><label for="iP2">P2</label><input type="radio" name="posicao" value="P3" id="iP3"><label for="iP3">P3</label><input type="radio" name="posicao" value="P4" id="iP4"><label for="iP4">P4</label><input type="radio" name="posicao" value="P5" id="iP5"><label for="iP5">P5</label><input type="radio" name="posicao" value="P6" id="iP6"><label for="iP6">P6</label><input type="radio" name="posicao" value="Reserva" id="iRes"><label for="iRes">Reserva</label></div></div>
+                    <button type="submit" class="btn btn-primary">Adicionar Atleta</button>
+                </form>
+            </div>
+        </section>
 
-        <div>
-            <h3>Placar</h3>
-            <div id="placar" class="placar"></div>
-            <button onclick="addPonto('Casa')">Casa +1</button>
-            <button onclick="addPonto('Fora')">Fora +1</button>
-            <button onclick="removerUltimoPonto()">Remover último ponto</button>
-            <button onclick="zerarPlacar()">Zerar placar</button>
-        </div>
-
-
-        <form>
-            <fieldset>
-                <legend>Atletas</legend>
-                
-                <fieldset>
-                    <legend>Reservas</legend>
-                    <div id="reserva"></div>
-                </fieldset>
-                
-                <fieldset>
-                    <legend>Títulares</legend>
-                    <p id="P1">P1 - </p>
-                    <p id="P2">P2 - </p>
-                    <p id="P3">P3 - </p>
-                    <p id="P4">P4 - </p>
-                    <p id="P5">P5 - </p>
-                    <p id="P6">P6 - </p>
-                </fieldset>
-
-            </fieldset>
-
-            <fieldset>
-                <legend>Ações</legend>
-                <div id="acao"></div>
-                <div id="opcoes"></div>
-            </fieldset>
-        </form>
-            
-        <div id="timeLine">
-
-        </div>
-
-        <div>
-            <table id="ata" border="1">
-                <caption>Atacantes</caption>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>posição</th>
-                        <th>Total Ataques</th>
-                        <th>Ataques certos</th>
-                        <th>nota Ataques</th>
-                        <th>Total Saques</th>
-                        <th>Saques certos</th>
-                        <th>Total passes</th>
-                        <th>passes certos</th>
-                        <th>% de acerto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Os atletas adicionados aparecerão aqui -->
-                </tbody>
-            </table>
-        </div>
-
-        <div>
-            <table id="lev" border="1">
-                <caption>Levantadores</caption>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Total Levantamentos</th>
-                        <th>Levantamentos certas</th>
-                        <th>Nota levantamento</th>
-                        <th>Total Ataques</th>
-                        <th>Ataques certos</th>
-                        <th>Total Saques</th>
-                        <th>Saques certos</th>
-                        <th>% de acerto</th>
-                    </tr>
-                </thead>
-                <tbody id="ataBody">
-                    <!-- Os atletas adicionados aparecerão aqui -->
-                </tbody>
-            </table>
-        </div>
-
-        <div>
-            <table id="def" border="1">
-                <caption>Líberos</caption>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Total defesas</th>
-                        <th>Defesas certas</th>
-                        <th>Nota defesas</th>
-                        <th>Total passes</th>
-                        <th>passes certos</th>
-                        <th>Total Levantamentos</th>
-                        <th>Levantamentos certas</th>
-                        <th>% de acerto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Os atletas adicionados aparecerão aqui -->
-                </tbody>
-            </table>
-        </div>
-
-        <div>
-            <table id="saq" border="1">
-                <caption>Saques</caption>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Posição do saque</th>
-                        <th>Acerto</th>
-                        <th>Erro</th>
-                        <th>Nota do saque</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Os atletas adicionados aparecerão aqui -->
-                </tbody>
-            </table>
-        </div>
-
-        <div><button onclick="exportarParaExcel()">Baixar Resultados (Excel)</button></div>
-
+        <section class="container">
+            <div class="card">
+                <h2 class="section-title">Escalação Atual</h2>
+                <div class="roster-container">
+                    <div class="starters-box">
+                        <h3>Titulares</h3>
+                        </div>
+                    <div class="reserves-box">
+                        <h3>Reservas</h3>
+                        <div id="reserves-list"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
+        <section class="container">
+            <div class="card">
+                <h2 class="section-title">Placar</h2>
+                <div id="placar-container" class="placar"></div>
+                <div class="button-group">
+                    <button id="btn-add-casa" class="btn btn-primary">Casa +1</button>
+                    <button id="btn-add-fora" class="btn btn-danger">Fora +1</button>
+                    <button id="btn-remove-last" class="btn btn-secondary">Remover Último</button>
+                    <button id="btn-reset-placar" class="btn btn-secondary">Zerar Placar</button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="container">
+            <h2 class="section-title">Estatísticas</h2>
+            <div class="card table-container">
+                <h3>Atacantes</h3>
+                <table id="table-ata">
+                    <thead><tr><th>Nome</th><th>Função</th><th>Ataques</th><th>Ataques ✓</th><th>Nota</th><th>Saques</th><th>Saques ✓</th><th>Passes</th><th>Passes ✓</th><th>% Acerto</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="card table-container">
+                <h3>Levantadores</h3>
+                <table id="table-lev">
+                    <thead><tr><th>Nome</th><th>Levant.</th><th>Levant. ✓</th><th>Nota</th><th>Ataques</th><th>Ataques ✓</th><th>Saques</th><th>Saques ✓</th><th>% Acerto</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="card table-container">
+                <h3>Líberos</h3>
+                <table id="table-def">
+                    <thead><tr><th>Nome</th><th>Defesas</th><th>Defesas ✓</th><th>Nota</th><th>Passes</th><th>Passes ✓</th><th>Levant.</th><th>Levant. ✓</th><th>% Acerto</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section class="container">
+            <button id="btn-export-excel" class="btn btn-primary">Baixar Resultados (Excel)</button>
+        </section>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-        <script src="dados.js"></script>
     </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="dados.js"></script>
 </body>
 </html>
