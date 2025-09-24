@@ -55,3 +55,25 @@ button, #iAcao{
 #nomesCheck button{
     margin: 0px 5px;
 }
+
+.placar {
+  display: flex;    
+  flex-direction: row;
+  gap: 2px;
+  margin: 10px 0;
+}
+
+.quadrado {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #333;
+  background-color: white;
+}
+
+.casa {
+  background-color: blue;
+}
+
+.fora {
+  background-color: red;
+}

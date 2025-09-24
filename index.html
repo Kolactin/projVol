@@ -35,28 +35,10 @@
         </div>
 
         <div>
-            <form>
-                <p>
-                    <fieldset>
-                        <legend>Casa:</legend>
-                        <input type="button" name="addc" id="iAddc" value="adicionar ponto" onclick="addCasa()">
-                        <input type="button" name="remc" id="iRemc" value="retirar ponto" onclick="remCasa()">
-                    </fieldset>
-                </p>
-                <p>
-                    <label id="casa" for="iCasa">Casa:</label>
-                    <input type="number" name="casa" id="iCasa">
-                    <label id="fora" for="ifora">Visitante:</label>
-                    <input type="number" name="fora" id="iFora">
-                </p>
-                <p>
-                    <fieldset>
-                        <legend>Visitante:</legend>
-                        <input type="button" name="addf" id="iAddF" value="adicionar ponto" onclick="addFora()">
-                        <input type="button" name="remf" id="iRemF" value="retirar ponto" onclick="remFora()">
-                    </fieldset>
-                </p>
-            </form>
+            <h3>Placar</h3>
+            <div id="placar" class="placar"></div>
+            <button onclick="addPonto('Casa')">Casa +1</button>
+            <button onclick="addPonto('Fora')">Fora +1</button>
         </div>
 
         <form>
