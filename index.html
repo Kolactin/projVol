@@ -29,11 +29,12 @@
                 <div class="roster-container">
                     <div class="starters-box">
                         <h3>Titulares</h3>
-                        </div>
+                    </div>
                     <div class="reserves-box">
                         <h3>Reservas</h3>
                         <div id="reserves-list"></div>
                     </div>
+                </div>
             </div>
         </section>
         
@@ -49,7 +50,7 @@
                 </div>
             </div>
         </section>
-        
+
         <section class="container">
             <div class="card">
                 <h2 class="section-title">Timeline da Partida</h2>
@@ -85,10 +86,6 @@
         </section>
         
         <section class="container">
-            <button id="btn-export-excel" class="btn btn-primary">Baixar Resultados (Excel)</button>
-        </section>
-        
-        <section class="container">
             <div class="card">
                 <h2 class="section-title">Gerenciar Partida</h2>
                 <div class="button-group">
@@ -96,13 +93,13 @@
                     <button id="btn-save-game" class="btn btn-secondary">Salvar Jogo (Arquivo)</button>
                     <button id="btn-load-game" class="btn btn-secondary">Carregar Jogo (Arquivo)</button>
                 </div>
-                <input type="file" id="file-loader" accept=".json" style="display: none;">
+                <input type="file" id="file-loader" accept="*/*" style="display: none;">
             </div>
         </section>
 
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="dados.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
