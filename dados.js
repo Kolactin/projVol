@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- ESTADO DA APLICAÇÃO ---
     let players = [];
     let scoreboardHistory = [];
+    let gameTimeline = [];
 
     // --- ELEMENTOS DO DOM ---
     const form = document.getElementById('add-player-form');
@@ -12,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lev: document.querySelector('#table-lev tbody'),
         def: document.querySelector('#table-def tbody'),
     };
+    const timelineFeed = document.getElementById('timeline-feed');
     const placarContainer = document.getElementById('placar-container');
     const btnAddCasa = document.getElementById('btn-add-casa');
     const btnAddFora = document.getElementById('btn-add-fora');
@@ -22,29 +24,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DEFINIÇÃO DAS AÇÕES POR FUNÇÃO ---
     const playerActions = {
         atacante: [
-            { label: 'A ✓', type: 'success', stat: 'ataques', substat: 'ataquesCertos', title: 'Ataque Certo' },
-            { label: 'A ⨉', type: 'error', stat: 'ataques', title: 'Erro de Ataque' },
-            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', title: 'Saque Certo' },
-            { label: 'S ⨉', type: 'error', stat: 'saques', title: 'Erro de Saque' },
-            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', title: 'Passe Certo' },
-            { label: 'P ⨉', type: 'error', stat: 'passes', title: 'Erro de Passe' },
+            { label: 'A ✓', type: 'success', stat: 'ataques', substat: 'ataquesCertos', description: 'Ataque Certo' },
+            { label: 'A ⨉', type: 'error', stat: 'ataques', description: 'Erro de Ataque' },
+            { label: 'B ✓', type: 'success', stat: 'bloqueios', substat: 'bloqueiosCertos', description: 'Ponto de Bloqueio' },
+            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Ponto de Saque (Ace)' },
+            { label: 'S ⨉', type: 'error', stat: 'saques', description: 'Erro de Saque' },
+            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Passe Perfeito' },
+            { label: 'P ⨉', type: 'error', stat: 'passes', description: 'Erro de Passe' },
         ],
         levantador: [
-            { label: 'L ✓', type: 'success', stat: 'levantamentos', substat: 'levantamentosCertos', title: 'Levantamento Certo' },
-            { label: 'L ⨉', type: 'error', stat: 'levantamentos', title: 'Erro de Levantamento' },
-            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', title: 'Saque Certo' },
-            { label: 'S ⨉', type: 'error', stat: 'saques', title: 'Erro de Saque' },
+            { label: 'L ✓', type: 'success', stat: 'levantamentos', substat: 'levantamentosCertos', description: 'Levantamento Preciso' },
+            { label: 'L ⨉', type: 'error', stat: 'levantamentos', description: 'Erro de Levantamento' },
+            { label: 'S ✓', type: 'success', stat: 'saques', substat: 'saquesCertos', description: 'Ponto de Saque (Ace)' },
+            { label: 'S ⨉', type: 'error', stat: 'saques', description: 'Erro de Saque' },
         ],
         libero: [
-            { label: 'D ✓', type: 'success', stat: 'defesas', substat: 'defesasCertas', title: 'Defesa Certa' },
-            { label: 'D ⨉', type: 'error', stat: 'defesas', title: 'Erro de Defesa' },
-            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', title: 'Passe Certo' },
-            { label: 'P ⨉', type: 'error', stat: 'passes', title: 'Erro de Passe' },
+            { label: 'D ✓', type: 'success', stat: 'defesas', substat: 'defesasCertas', description: 'Defesa Incrível' },
+            { label: 'D ⨉', type: 'error', stat: 'defesas', description: 'Erro de Defesa' },
+            { label: 'P ✓', type: 'success', stat: 'passes', substat: 'passesCertos', description: 'Passe Perfeito' },
+            { label: 'P ⨉', type: 'error', stat: 'passes', description: 'Erro de Passe' },
         ]
     };
 
     // --- LÓGICA ---
-    const handleAddPlayer = (event) => {
+    const handleAddPlayer = (event) => { /* ... (código sem alterações) ... */ 
         event.preventDefault();
         const nameInput = document.getElementById('player-name-input');
         const name = nameInput.value.trim();
@@ -57,20 +60,18 @@ document.addEventListener('DOMContentLoaded', () => {
             id: `player-${Date.now()}`, name, funcao: functionRadio.value, posicao: positionRadio.value,
             stats: {
                 ataques: 0, ataquesCertos: 0, saques: 0, saquesCertos: 0, passes: 0, passesCertos: 0,
-                levantamentos: 0, levantamentosCertos: 0, defesas: 0, defesasCertas: 0,
+                levantamentos: 0, levantamentosCertos: 0, defesas: 0, defesasCertas: 0, bloqueios: 0, bloqueiosCertos: 0,
             }
         });
         renderAll();
-        form.reset();
-        nameInput.focus();
+        form.reset(); nameInput.focus();
     };
 
-    const initiateSubstitution = (reservePlayerId) => {
+    const initiateSubstitution = (reservePlayerId) => { /* ... (código sem alterações) ... */ 
         const reservePlayer = players.find(p => p.id === reservePlayerId);
         if (!reservePlayer) return;
-        const starters = players.filter(p => p.posicao.startsWith('P'));
-        const starterOptionsText = starters.map(s => `${s.posicao}: ${s.name}`).join('\n');
-        const promptMessage = `Substituir com ${reservePlayer.name}.\n\nTitulares:\n${starterOptionsText}\n\nDigite a posição a substituir (ex: P1):`;
+        const starters = players.filter(p => p.posicao.startsWith('P')).map(s => `${s.posicao}: ${s.name}`).join('\n');
+        const promptMessage = `Substituir com ${reservePlayer.name}.\n\nTitulares:\n${starters}\n\nDigite a posição (ex: P1):`;
         const targetPositionInput = prompt(promptMessage);
         if (!targetPositionInput) return;
         const targetPosition = targetPositionInput.trim().toUpperCase();
@@ -79,39 +80,79 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const starterPlayer = players.find(p => p.posicao === targetPosition);
         if (!starterPlayer) {
-            alert(`Nenhum jogador na posição ${targetPosition}.`); return;
+            alert(`Não há jogador na posição ${targetPosition}.`); return;
         }
         starterPlayer.posicao = 'Reserva';
         reservePlayer.posicao = targetPosition;
         renderAll();
     };
 
-    const updatePlayerStat = (playerId, stat, substat) => {
+    const updatePlayerStat = (playerId, stat, substat, description) => { /* ... (código sem alterações) ... */ 
         const player = players.find(p => p.id === playerId);
         if (!player) return;
         player.stats[stat]++;
         if (substat) player.stats[substat]++;
+        const actionDescription = `${description} de ${player.name} (${player.posicao})`;
+        addTimelineEntry(actionDescription);
         renderStatsTables();
+    };
+    
+    const addTimelineEntry = (description) => { /* ... (código sem alterações) ... */ 
+        const casaPontos = scoreboardHistory.filter(p => p === 'Casa').length;
+        const foraPontos = scoreboardHistory.filter(p => p === 'Fora').length;
+        const currentScore = `${casaPontos} x ${foraPontos}`;
+        const lastRally = gameTimeline[gameTimeline.length - 1];
+        if (!lastRally || lastRally.score !== currentScore) {
+            gameTimeline.push({ id: `rally-${Date.now()}`, score: currentScore, actions: [description] });
+        } else {
+            lastRally.actions.push(description);
+        }
+        renderTimeline();
+    };
+    
+    const addScorePoint = (team) => {
+        addTimelineEntry(`>>> Ponto para ${team}! <<<`);
+        scoreboardHistory.push(team);
+        renderScoreboard();
+    };
+
+    // ===================================================================
+    // FUNÇÕES ALTERADAS
+    // ===================================================================
+    const removeLastScorePoint = () => {
+        const lastPoint = scoreboardHistory[scoreboardHistory.length - 1];
+        // Remove a última entrada da timeline somente se ela foi uma marcação de ponto
+        const lastRally = gameTimeline[gameTimeline.length - 1];
+        if (lastRally && lastRally.actions.some(action => action.includes(`Ponto para ${lastPoint}`))) {
+            gameTimeline.pop();
+        }
+        
+        scoreboardHistory.pop(); // Remove o ponto do placar
+        renderScoreboard();
+        renderTimeline(); // Renderiza a timeline para refletir a remoção
+    };
+
+    const resetScoreboard = () => {
+        scoreboardHistory = []; // Zera o placar
+        gameTimeline = []; // Zera a timeline
+        renderScoreboard();
+        renderTimeline(); // Renderiza a timeline vazia
     };
 
     // --- RENDERIZAÇÃO ---
-    const renderRoster = () => {
+    const renderRoster = () => { /* ... (código sem alterações) ... */ 
         if (!startersBox || !reservesList) return;
-        startersBox.innerHTML = '<h3>Titulares</h3>'; // Limpa e recria o cabeçalho
+        startersBox.innerHTML = '<h3>Titulares</h3>';
         reservesList.innerHTML = '';
-        
-        // Gera os 6 slots de titulares, preenchendo com jogadores ou deixando em branco
         for (let i = 1; i <= 6; i++) {
             const pos = `P${i}`;
             const player = players.find(p => p.posicao === pos);
             const name = player ? `${player.name} (${player.funcao})` : '-';
-
             const starterDiv = document.createElement('div');
             starterDiv.className = 'starter-player';
             starterDiv.dataset.position = pos;
             starterDiv.innerHTML = `<p><strong>${pos}:</strong> <span>${name}</span></p><div class="actions"></div>`;
             startersBox.appendChild(starterDiv);
-
             if (player) {
                 const actionsContainer = starterDiv.querySelector('.actions');
                 let actionGroup = ['central', 'ponteiro', 'oposto'].includes(player.funcao) ? 'atacante' : player.funcao;
@@ -119,16 +160,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     const button = document.createElement('button');
                     button.className = `btn action-btn ${action.type === 'success' ? 'btn-success' : 'btn-error'}`;
                     button.textContent = action.label;
-                    button.title = action.title;
+                    button.title = action.title || action.description;
                     button.dataset.playerId = player.id;
                     button.dataset.stat = action.stat;
                     if (action.substat) button.dataset.substat = action.substat;
+                    if (action.description) button.dataset.description = action.description;
                     actionsContainer.appendChild(button);
                 });
             }
         }
-        
-        // Gera a lista de reservas
         players.filter(p => p.posicao === 'Reserva').forEach(player => {
             const reserveElement = document.createElement('div');
             reserveElement.className = 'reserve-player clickable-reserve';
@@ -138,15 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // FUNÇÃO CORRIGIDA E COMPLETA PARA RENDERIZAR AS ESTATÍSTICAS
-    const renderStatsTables = () => {
-        Object.values(tableBodies).forEach(tbody => { if (tbody) tbody.innerHTML = ''; });
-        
+    const renderStatsTables = () => { /* ... (código sem alterações) ... */ 
+        if (!tableBodies.ata || !tableBodies.lev || !tableBodies.def) return;
+        tableBodies.ata.innerHTML = ''; tableBodies.lev.innerHTML = ''; tableBodies.def.innerHTML = '';
         players.forEach(player => {
-            const s = player.stats;
-            let rowHtml = '';
-            let targetTableBody = null;
-
+            const s = player.stats; let rowHtml = ''; let targetTableBody = null;
             switch (player.funcao) {
                 case 'central': case 'ponteiro': case 'oposto':
                     const totalAtacante = s.ataques + s.saques + s.passes;
@@ -170,14 +206,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     targetTableBody = tableBodies.def;
                     break;
             }
-
-            if (targetTableBody && rowHtml) {
-                targetTableBody.innerHTML += rowHtml;
-            }
+            if(targetTableBody && rowHtml) targetTableBody.innerHTML += rowHtml;
         });
     };
 
-    const renderScoreboard = () => {
+    const renderTimeline = () => { /* ... (código sem alterações) ... */ 
+        if (!timelineFeed) return;
+        if (gameTimeline.length === 0) {
+            timelineFeed.innerHTML = `<p class="timeline-empty">Nenhum ponto registrado ainda.</p>`; return;
+        }
+        timelineFeed.innerHTML = '';
+        gameTimeline.forEach(rally => {
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'timeline-entry';
+            const header = `<div class="timeline-header"><span class="timeline-score">${rally.score}</span></div>`;
+            const actionsList = rally.actions.map(action => `<li>${action}</li>`).join('');
+            const actionsHtml = `<ul class="timeline-actions">${actionsList}</ul>`;
+            entryDiv.innerHTML = header + actionsHtml;
+            timelineFeed.appendChild(entryDiv);
+        });
+    };
+    
+    const renderScoreboard = () => { /* ... (código sem alterações) ... */ 
         if (!placarContainer) return;
         placarContainer.innerHTML = '';
         scoreboardHistory.forEach(point => {
@@ -188,31 +238,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const renderAll = () => {
-        renderRoster();
-        renderStatsTables();
-        renderScoreboard();
-    };
+    const renderAll = () => { renderRoster(); renderStatsTables(); renderScoreboard(); renderTimeline(); };
 
     // --- CONECTORES DE EVENTOS ---
     if(form) form.addEventListener('submit', handleAddPlayer);
-    if(reservesList) reservesList.addEventListener('click', (event) => {
-        const reserveElement = event.target.closest('.clickable-reserve');
-        if (reserveElement) initiateSubstitution(reserveElement.dataset.playerId);
+    if(reservesList) reservesList.addEventListener('click', e => {
+        const target = e.target.closest('.clickable-reserve');
+        if(target) initiateSubstitution(target.dataset.playerId);
     });
-    if(startersBox) startersBox.addEventListener('click', (event) => {
-        const actionButton = event.target.closest('.action-btn');
-        if (actionButton) {
-            const { playerId, stat, substat } = actionButton.dataset;
-            updatePlayerStat(playerId, stat, substat);
+    if(startersBox) startersBox.addEventListener('click', e => {
+        const target = e.target.closest('.action-btn');
+        if(target) {
+            const { playerId, stat, substat, description } = target.dataset;
+            updatePlayerStat(playerId, stat, substat, description);
         }
     });
-
-    const addScorePoint = (team) => { scoreboardHistory.push(team); renderScoreboard(); };
     if(btnAddCasa) btnAddCasa.addEventListener('click', () => addScorePoint('Casa'));
     if(btnAddFora) btnAddFora.addEventListener('click', () => addScorePoint('Fora'));
-    if(btnRemoveLast) btnRemoveLast.addEventListener('click', () => { scoreboardHistory.pop(); renderScoreboard(); });
-    if(btnResetPlacar) btnResetPlacar.addEventListener('click', () => { scoreboardHistory = []; renderScoreboard(); });
+    if(btnRemoveLast) btnRemoveLast.addEventListener('click', removeLastScorePoint);
+    if(btnResetPlacar) btnResetPlacar.addEventListener('click', resetScoreboard);
 
     // --- INICIALIZAÇÃO ---
     renderAll();

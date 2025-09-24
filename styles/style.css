@@ -334,3 +334,57 @@ td:first-child, th:first-child {
 .btn-error:hover {
     background-color: #c82333;
 }
+
+/* --- Estilos da Timeline --- */
+#timeline-feed {
+    max-height: 400px;
+    overflow-y: auto; /* Adiciona barra de rolagem se o conteúdo for grande */
+    display: flex;
+    flex-direction: column-reverse; /* Mostra o evento mais recente no topo */
+    border-top: 2px solid var(--color-border);
+    padding-top: 1rem;
+}
+
+.timeline-empty {
+    text-align: center;
+    color: var(--color-text-secondary);
+}
+
+.timeline-entry {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+.timeline-entry:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.timeline-score {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--color-primary);
+}
+
+.timeline-description {
+    color: var(--color-text-secondary);
+}
+
+.timeline-actions {
+    list-style: none; /* Remove as bolinhas da lista */
+    padding-left: 10px;
+    margin-top: 8px;
+    border-left: 2px solid var(--color-border);
+}
+
+.timeline-actions li {
+    padding: 2px 0;
+    color: var(--color-text-secondary);
+}
