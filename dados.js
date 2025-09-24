@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAddFora = document.getElementById('btn-add-fora');
     const btnRemoveLast = document.getElementById('btn-remove-last');
     const btnResetPlacar = document.getElementById('btn-reset-placar');
-    const btnRotate = document.getElementById('btn-rotate');
     
     // --- DEFINIÇÃO DAS AÇÕES POR FUNÇÃO ---
     const playerActions = {
@@ -76,18 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!['P1', 'P2', 'P3', 'P4', 'P5', 'P6'].includes(targetPosition)) {
             alert('Posição inválida.'); return;
         }
-
         const frontRowPositions = ['P4', 'P3', 'P2'];
         if (reservePlayer.funcao === 'libero' && frontRowPositions.includes(targetPosition)) {
-            alert('Ação inválida! O líbero não pode entrar em uma posição de ataque (P4, P3 ou P2).');
-            return;
+            alert('Ação inválida! O líbero não pode entrar em uma posição de ataque (P4, P3 ou P2).'); return;
         }
-
         const starterPlayer = players.find(p => p.posicao === targetPosition);
         if (!starterPlayer) {
             alert(`Não há jogador na posição ${targetPosition}.`); return;
         }
-        
         const substitutionDescription = `⇄ Substituição: ${reservePlayer.name} (entra) ↔ ${starterPlayer.name} (sai)`;
         starterPlayer.posicao = 'Reserva';
         reservePlayer.posicao = targetPosition;
@@ -119,6 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const addScorePoint = (team) => {
+        const lastPoint = scoreboardHistory[scoreboardHistory.length - 1];
+        if (team === 'Casa' && lastPoint === 'Fora') {
+            rotatePlayers();
+        }
         addTimelineEntry(`>>> Ponto para ${team}! <<<`);
         scoreboardHistory.push(team);
         renderScoreboard();
@@ -150,13 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (Object.keys(oldPositions).length < 6) {
             alert("É preciso ter 6 jogadores titulares em quadra para fazer o rodízio."); return;
         }
-        
         const playerInP5 = oldPositions['P5'];
         if (playerInP5 && playerInP5.funcao === 'libero') {
-            alert('Ação inválida! O líbero está na P5 e não pode rotacionar para a P4 (ataque). Realize a substituição do líbero antes de fazer o rodízio.');
-            return;
+            alert('Ação inválida! O líbero está na P5 e não pode rotacionar para a P4 (ataque). Realize a substituição do líbero antes de fazer o rodízio.'); return;
         }
-
         if (oldPositions.P1) oldPositions.P1.posicao = 'P6';
         if (oldPositions.P2) oldPositions.P2.posicao = 'P1';
         if (oldPositions.P3) oldPositions.P3.posicao = 'P2';
@@ -285,7 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(btnAddFora) btnAddFora.addEventListener('click', () => addScorePoint('Fora'));
     if(btnRemoveLast) btnRemoveLast.addEventListener('click', removeLastScorePoint);
     if(btnResetPlacar) btnResetPlacar.addEventListener('click', resetScoreboard);
-    if(btnRotate) btnRotate.addEventListener('click', rotatePlayers);
 
     // --- INICIALIZAÇÃO ---
     renderAll();
