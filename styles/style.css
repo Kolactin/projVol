@@ -388,3 +388,12 @@ td:first-child, th:first-child {
     padding: 2px 0;
     color: var(--color-text-secondary);
 }
+
+.roster-actions {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- ESTADO DA APLICAÇÃO ---
     let players = [];
     let scoreboardHistory = [];
     let gameTimeline = [];
 
+    // --- ELEMENTOS DO DOM ---
     const form = document.getElementById('add-player-form');
     const startersBox = document.querySelector('.starters-box');
     const reservesList = document.getElementById('reserves-list');
@@ -17,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAddFora = document.getElementById('btn-add-fora');
     const btnRemoveLast = document.getElementById('btn-remove-last');
     const btnResetPlacar = document.getElementById('btn-reset-placar');
-    const btnExportExcel = document.getElementById('btn-export-excel');
+    const btnRotate = document.getElementById('btn-rotate');
     
     // --- DEFINIÇÃO DAS AÇÕES POR FUNÇÃO ---
     const playerActions = {
@@ -63,8 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
         form.reset(); nameInput.focus();
     };
 
-    const initiateSubstitution = (reservePlayerId) => { 
-    const reservePlayer = players.find(p => p.id === reservePlayerId);
+    const initiateSubstitution = (reservePlayerId) => {
+        const reservePlayer = players.find(p => p.id === reservePlayerId);
         if (!reservePlayer) return;
         const starters = players.filter(p => p.posicao.startsWith('P')).map(s => `${s.posicao}: ${s.name}`).join('\n');
         const promptMessage = `Substituir com ${reservePlayer.name}.\n\nTitulares:\n${starters}\n\nDigite a posição (ex: P1):`;
@@ -83,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderAll();
     };
 
-    const updatePlayerStat = (playerId, stat, substat, description) => { 
+    const updatePlayerStat = (playerId, stat, substat, description) => {
         const player = players.find(p => p.id === playerId);
         if (!player) return;
         player.stats[stat]++;
@@ -93,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderStatsTables();
     };
     
-    const addTimelineEntry = (description) => { 
+    const addTimelineEntry = (description) => {
         const casaPontos = scoreboardHistory.filter(p => p === 'Casa').length;
         const foraPontos = scoreboardHistory.filter(p => p === 'Fora').length;
         const currentScore = `${casaPontos} x ${foraPontos}`;
@@ -113,27 +115,43 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const removeLastScorePoint = () => {
-        const lastPoint = scoreboardHistory[scoreboardHistory.length - 1]; 
-        // Remove a última entrada da timeline somente se ela foi uma marcação de ponto
+        const lastPoint = scoreboardHistory[scoreboardHistory.length - 1];
         const lastRally = gameTimeline[gameTimeline.length - 1];
         if (lastRally && lastRally.actions.some(action => action.includes(`Ponto para ${lastPoint}`))) {
             gameTimeline.pop();
         }
-        
-        scoreboardHistory.pop(); // Remove o ponto do placar
+        scoreboardHistory.pop();
         renderScoreboard();
-        renderTimeline(); // Renderiza a timeline atualizada
+        renderTimeline();
     };
 
     const resetScoreboard = () => {
-        scoreboardHistory = []; // Zera o placar
-        gameTimeline = []; // Zera a timeline
+        scoreboardHistory = [];
+        gameTimeline = [];
         renderScoreboard();
-        renderTimeline(); // Renderiza a timeline vazia
+        renderTimeline();
+    };
+
+    const rotatePlayers = () => {
+        const oldPositions = {};
+        players.forEach(player => {
+            if (player.posicao.startsWith('P')) oldPositions[player.posicao] = player;
+        });
+        if (Object.keys(oldPositions).length < 6) {
+            alert("É preciso ter 6 jogadores titulares em quadra para fazer o rodízio."); return;
+        }
+        if (oldPositions.P1) oldPositions.P1.posicao = 'P6';
+        if (oldPositions.P2) oldPositions.P2.posicao = 'P1';
+        if (oldPositions.P3) oldPositions.P3.posicao = 'P2';
+        if (oldPositions.P4) oldPositions.P4.posicao = 'P3';
+        if (oldPositions.P5) oldPositions.P5.posicao = 'P4';
+        if (oldPositions.P6) oldPositions.P6.posicao = 'P5';
+        addTimelineEntry("--- Rodízio Realizado ---");
+        renderAll();
     };
 
     // --- RENDERIZAÇÃO ---
-    const renderRoster = () => { 
+    const renderRoster = () => {
         if (!startersBox || !reservesList) return;
         startersBox.innerHTML = '<h3>Titulares</h3>';
         reservesList.innerHTML = '';
@@ -171,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const renderStatsTables = () => { 
+    const renderStatsTables = () => {
         if (!tableBodies.ata || !tableBodies.lev || !tableBodies.def) return;
         tableBodies.ata.innerHTML = ''; tableBodies.lev.innerHTML = ''; tableBodies.def.innerHTML = '';
         players.forEach(player => {
@@ -203,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const renderTimeline = () => { 
+    const renderTimeline = () => {
         if (!timelineFeed) return;
         if (gameTimeline.length === 0) {
             timelineFeed.innerHTML = `<p class="timeline-empty">Nenhum ponto registrado ainda.</p>`; return;
@@ -220,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
-    const renderScoreboard = () => {  
+    const renderScoreboard = () => {
         if (!placarContainer) return;
         placarContainer.innerHTML = '';
         scoreboardHistory.forEach(point => {
@@ -250,6 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(btnAddFora) btnAddFora.addEventListener('click', () => addScorePoint('Fora'));
     if(btnRemoveLast) btnRemoveLast.addEventListener('click', removeLastScorePoint);
     if(btnResetPlacar) btnResetPlacar.addEventListener('click', resetScoreboard);
+    if(btnRotate) btnRotate.addEventListener('click', rotatePlayers);
 
     // --- INICIALIZAÇÃO ---
     renderAll();
