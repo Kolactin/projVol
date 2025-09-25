@@ -61,18 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleAddPlayer = (event) => { event.preventDefault(); const nameInput = document.getElementById('player-name-input'); const name = nameInput.value.trim(); const functionRadio = document.querySelector('input[name="funcao"]:checked'); const positionRadio = document.querySelector('input[name="posicao"]:checked'); if (!name || !functionRadio || !positionRadio) { alert('Por favor, preencha nome, função e posição inicial.'); return; } players.push({ id: `player-${Date.now()}`, name, funcao: functionRadio.value, posicao: positionRadio.value, stats: { ataques: 0, ataquesCertos: 0, saques: 0, saquesCertos: 0, passes: 0, passesCertos: 0, levantamentos: 0, levantamentosCertos: 0, defesas: 0, defesasCertas: 0, bloqueios: 0, bloqueiosCertos: 0, levantamentosPorQualidade: { '6m': 0, '7m': 0, '8m': 0, '9m': 0 } } }); saveState(); renderAll(); form.reset(); nameInput.focus(); };
     const initiateSubstitution = (reservePlayerId) => { const reservePlayer = players.find(p => p.id === reservePlayerId); if (!reservePlayer) return; const starters = players.filter(p => p.posicao.startsWith('P')).map(s => `${s.posicao}: ${s.name}`).join('\n'); const promptMessage = `Substituir com ${reservePlayer.name}.\n\nTitulares:\n${starters}\n\nDigite a posição (ex: P1):`; const targetPositionInput = prompt(promptMessage); if (!targetPositionInput) return; const targetPosition = targetPositionInput.trim().toUpperCase(); if (!['P1', 'P2', 'P3', 'P4', 'P5', 'P6'].includes(targetPosition)) { alert('Posição inválida.'); return; } const frontRowPositions = ['P4', 'P3', 'P2']; if (reservePlayer.funcao === 'libero' && frontRowPositions.includes(targetPosition)) { alert('Ação inválida! O líbero não pode entrar em uma posição de ataque (P4, P3 ou P2).'); return; } const starterPlayer = players.find(p => p.posicao === targetPosition); if (!starterPlayer) { alert(`Não há jogador na posição ${targetPosition}.`); return; } const substitutionAction = { description: `⇄ Substituição: ${reservePlayer.name} (entra) ↔ ${starterPlayer.name} (sai)`, isStat: false }; starterPlayer.posicao = 'Reserva'; reservePlayer.posicao = targetPosition; addTimelineEntry(substitutionAction); saveState(); renderAll(); };
     const updatePlayerStat = (playerId, stat, substat, description, targetPosition = null, settingQuality = null) => { const player = players.find(p => p.id === playerId); if (!player) return; player.stats[stat]++; if (substat) player.stats[substat]++; if (settingQuality && player.stats.levantamentosPorQualidade) { player.stats.levantamentosPorQualidade[settingQuality]++; } let actionDescription = `${description} de ${player.name} (${player.posicao})`; if (targetPosition) { actionDescription += ` na ${targetPosition} adversária`; } if (settingQuality) { actionDescription += ` (Levantamento: ${settingQuality})`; } const actionData = { description: actionDescription, isStat: true, playerId, stat, substat }; addTimelineEntry(actionData); saveState(); renderStatsTables(); };
-    
-    // --- MODAIS ---
     const openActionDetailModal = (actionDetails) => {
         pendingAction = actionDetails;
-
         const allButtons = actionModalOptions.querySelectorAll('button');
         const isBlockAction = pendingAction.stat === 'bloqueios';
-
         allButtons.forEach(button => {
             const pos = button.dataset.targetPos;
             if (isBlockAction) {
-                // Se for bloqueio, mostra apenas P2, P3, P4
                 if (['P2', 'P3', 'P4'].includes(pos)) {
                     button.style.display = 'inline-block';
                 } else {
@@ -82,10 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.style.display = 'inline-block';
             }
         });
-
         actionModal.classList.remove('hidden');
     };
-    
     const closeActionDetailModal = () => { actionModal.classList.add('hidden'); pendingAction = null; };
     const handleActionTargetSelection = (event) => { const targetPosition = event.target.closest('button').dataset.targetPos; if (targetPosition && pendingAction) { const { playerId, stat, substat, description, requiresSettingMap } = pendingAction; if (requiresSettingMap === 'true' && (players.find(p=>p.id === playerId)?.funcao === 'ponteiro' || players.find(p=>p.id === playerId)?.funcao === 'oposto')) { openSettingMapModal(pendingAction, targetPosition); } else { updatePlayerStat(playerId, stat, substat, description, targetPosition); } } closeActionDetailModal(); };
     const openSettingMapModal = (actionDetails, targetPosition = null) => { pendingAction = { ...actionDetails, targetPosition }; settingMapModal.classList.remove('hidden'); };
@@ -112,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 starterDiv.innerHTML = `<div class="starter-player-info">${player.name}<span>(${player.funcao} - ${player.posicao})</span></div><div class="actions"></div>`;
                 startersBox.appendChild(starterDiv);
                 const actionsContainer = starterDiv.querySelector('.actions');
-                let actionGroup = ['central', 'ponteiro', 'oposto', 'levantador'].includes(player.funcao) ? 'atacante' : player.funcao;
+                let actionGroup = ['central', 'ponteiro', 'oposto'].includes(player.funcao) ? 'atacante' : player.funcao;
                 if(playerActions[actionGroup]) {
                     playerActions[actionGroup].forEach(action => {
                         const isBlockAction = action.stat === 'bloqueios';
@@ -154,11 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const { playerId, stat, substat, description, requiresTarget, requiresSettingMap } = actionButton.dataset;
             const player = players.find(p => p.id === playerId);
             if (!player) return;
-            const isFrontRowHitterAttack = (
-                requiresSettingMap === 'true' &&
-                (player.funcao === 'ponteiro' || player.funcao === 'oposto') &&
-                ['P2', 'P3', 'P4'].includes(player.posicao)
-            );
+            const isFrontRowHitterAttack = ( requiresSettingMap === 'true' && (player.funcao === 'ponteiro' || player.funcao === 'oposto') && ['P2', 'P3', 'P4'].includes(player.posicao) );
             if (isFrontRowHitterAttack) {
                 openSettingMapModal({ playerId, stat, substat, description, requiresTarget });
             } else if (requiresTarget === 'true') {
