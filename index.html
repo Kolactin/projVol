@@ -50,7 +50,22 @@
                 </div>
             </div>
         </section>
-
+        
+        <div id="action-detail-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="action-modal-title">Posição Alvo no Campo Adversário</h3>
+            <div id="action-modal-options" class="position-grid">
+                <button class="btn" data-target-pos="P4">P4</button>
+                <button class="btn" data-target-pos="P3">P3</button>
+                <button class="btn" data-target-pos="P2">P2</button>
+                <button class="btn" data-target-pos="P5">P5</button>
+                <button class="btn" data-target-pos="P6">P6</button>
+                <button class="btn" data-target-pos="P1">P1</button>
+            </div>
+            <button id="action-modal-cancel-btn" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </div>
+    
         <section class="container">
             <div class="card">
                 <h2 class="section-title">Timeline da Partida</h2>
@@ -98,6 +113,34 @@
         </section>
 
     </main>
+
+        <div id="action-detail-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="action-modal-title">Posição Alvo no Campo Adversário</h3>
+            <div id="action-modal-options" class="position-grid">
+                <button class="btn" data-target-pos="P4">P4</button>
+                <button class="btn" data-target-pos="P3">P3</button>
+                <button class="btn" data-target-pos="P2">P2</button>
+                <button class="btn" data-target-pos="P5">P5</button>
+                <button class="btn" data-target-pos="P6">P6</button>
+                <button class="btn" data-target-pos="P1">P1</button>
+            </div>
+            <button id="action-modal-cancel-btn" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </div>
+
+        <div id="setting-map-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="setting-modal-title">Qualidade do Levantamento</h3>
+            <div id="setting-modal-options" class="position-grid">
+                <button class="btn" data-quality="6m">6m</button>
+                <button class="btn" data-quality="7m">7m</button>
+                <button class="btn" data-quality="8m">8m</button>
+                <button class="btn btn-primary" data-quality="9m">9m</button>
+            </div>
+            <button id="setting-modal-cancel-btn" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="dados.js"></script>
