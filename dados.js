@@ -62,16 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const initiateSubstitution = (reservePlayerId) => { const reservePlayer = players.find(p => p.id === reservePlayerId); if (!reservePlayer) return; const starters = players.filter(p => p.posicao.startsWith('P')).map(s => `${s.posicao}: ${s.name}`).join('\n'); const promptMessage = `Substituir com ${reservePlayer.name}.\n\nTitulares:\n${starters}\n\nDigite a posição (ex: P1):`; const targetPositionInput = prompt(promptMessage); if (!targetPositionInput) return; const targetPosition = targetPositionInput.trim().toUpperCase(); if (!['P1', 'P2', 'P3', 'P4', 'P5', 'P6'].includes(targetPosition)) { alert('Posição inválida.'); return; } const frontRowPositions = ['P4', 'P3', 'P2']; if (reservePlayer.funcao === 'libero' && frontRowPositions.includes(targetPosition)) { alert('Ação inválida! O líbero não pode entrar em uma posição de ataque (P4, P3 ou P2).'); return; } const starterPlayer = players.find(p => p.posicao === targetPosition); if (!starterPlayer) { alert(`Não há jogador na posição ${targetPosition}.`); return; } const substitutionAction = { description: `⇄ Substituição: ${reservePlayer.name} (entra) ↔ ${starterPlayer.name} (sai)`, isStat: false }; starterPlayer.posicao = 'Reserva'; reservePlayer.posicao = targetPosition; addTimelineEntry(substitutionAction); saveState(); renderAll(); };
     const updatePlayerStat = (playerId, stat, substat, description, targetPosition = null, settingQuality = null) => { const player = players.find(p => p.id === playerId); if (!player) return; player.stats[stat]++; if (substat) player.stats[substat]++; if (settingQuality && player.stats.levantamentosPorQualidade) { player.stats.levantamentosPorQualidade[settingQuality]++; } let actionDescription = `${description} de ${player.name} (${player.posicao})`; if (targetPosition) { actionDescription += ` na ${targetPosition} adversária`; } if (settingQuality) { actionDescription += ` (Levantamento: ${settingQuality})`; } const actionData = { description: actionDescription, isStat: true, playerId, stat, substat }; addTimelineEntry(actionData); saveState(); renderStatsTables(); };
     
-    // ===================================================================
-    // FUNÇÃO DO MODAL DE AÇÃO ATUALIZADA
-    // ===================================================================
+    // --- MODAIS ---
     const openActionDetailModal = (actionDetails) => {
         pendingAction = actionDetails;
 
         const allButtons = actionModalOptions.querySelectorAll('button');
         const isBlockAction = pendingAction.stat === 'bloqueios';
 
-        // Mostra ou esconde os botões conforme a ação
         allButtons.forEach(button => {
             const pos = button.dataset.targetPos;
             if (isBlockAction) {
@@ -82,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     button.style.display = 'none';
                 }
             } else {
-                // Para outras ações (saque, ataque), mostra todos
                 button.style.display = 'inline-block';
             }
         });

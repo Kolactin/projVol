@@ -7,7 +7,7 @@
     /* Paleta de Cores */
     --color-background: hsl(232, 28%, 12%); /* Fundo principal (azul bem escuro) */
     --color-surface: hsl(232, 28%, 19%);   /* Cor dos 'cards' */
-    --color-primary: hsl(220, 80%, 60%);   /* Azul principal para botões e destaques */
+    --color-primary: hsl(147, 53%, 39%);   /* Azul principal para botões e destaques */
     --color-primary-hover: hsl(220, 80%, 70%);
     --color-danger: hsl(350, 70%, 55%);
     --color-danger-hover: hsl(350, 70%, 65%);
@@ -271,12 +271,23 @@ td:first-child, th:first-child {
 
 .starters-box, .reserves-box {
     flex: 1;
-    min-width: 250px;
+    min-width: 300px;
+}
+
+.starters-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
 }
 
 .starters-box p {
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
+}
+
+.starters-box h3 {
+    grid-column: 1 / -1; /* Ocupa todas as colunas */
+    margin-bottom: 0;
 }
 
 .starters-box p span {
@@ -308,23 +319,56 @@ td:first-child, th:first-child {
 }
 
 .starter-player {
+    background-color: var(--color-background);
+    padding: 1rem;
+    border-radius: 9px; /* Bordas mais arredondadas */
+    border: 2px solid var(--color-border); /* Borda mais espessa */
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease; /* Transição suave */
+}
+
+.starter-player:hover {
+    background-color: var(--color-surface);
+    border-color: var(--color-secondary-hover);
+}
+
+.starter-player-info {
+    font-weight: 300;
+    font-size: 1.25rem; /* Nome do jogador maior */
+    text-align: center; /* Centraliza o nome */
+}
+
+.starter-player-info span {
+    display: block; /* Coloca a informação numa nova linha */
+    font-weight: 200;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
 }
 
 .starter-player .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    justify-content: center; /* Centraliza os botões */
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin-top 0.3s ease-out;
+}
+
+.starter-player.active {
+    background-color: hsl(232, 28%, 22%); /* Fundo mais claro */
+    border-color: var(--color-primary);   /* Borda azul para destaque */
 }
 
 .starter-player.active .actions {
-    max-height: 100px; /* Um valor alto o suficiente para caber os botões */
+    max-height: 50px;
     opacity: 1;
-    margin-top: 0.75rem; /* Adiciona um espaço quando os botões aparecem */
+    margin-top: 0.75rem;
 }
 
 .action-btn {
