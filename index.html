@@ -46,26 +46,11 @@
                     <button id="btn-add-casa" class="btn btn-primary">Casa +1</button>
                     <button id="btn-add-fora" class="btn btn-danger">Fora +1</button>
                     <button id="btn-remove-last" class="btn btn-secondary">Remover Último</button>
-                    <button id="btn-reset-placar" class="btn btn-secondary">Zerar Placar</button>
+                    <button id="btn-reset-placar" class="btn btn-secondary">Zerar Placar e Stats</button>
                 </div>
             </div>
         </section>
-        
-        <div id="action-detail-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 id="action-modal-title">Posição Alvo no Campo Adversário</h3>
-            <div id="action-modal-options" class="position-grid">
-                <button class="btn" data-target-pos="P4">P4</button>
-                <button class="btn" data-target-pos="P3">P3</button>
-                <button class="btn" data-target-pos="P2">P2</button>
-                <button class="btn" data-target-pos="P5">P5</button>
-                <button class="btn" data-target-pos="P6">P6</button>
-                <button class="btn" data-target-pos="P1">P1</button>
-            </div>
-            <button id="action-modal-cancel-btn" class="btn btn-secondary">Cancelar</button>
-        </div>
-    </div>
-    
+
         <section class="container">
             <div class="card">
                 <h2 class="section-title">Timeline da Partida</h2>
@@ -77,28 +62,7 @@
         
         <section class="container">
             <h2 class="section-title">Estatísticas</h2>
-            <div class="card table-container">
-                <h3>Atacantes</h3>
-                <table id="table-ata">
-                    <thead><tr><th>Nome</th><th>Função</th><th>Ataques</th><th>Ataques ✓</th><th>Nota</th><th>Saques</th><th>Saques ✓</th><th>Passes</th><th>Passes ✓</th><th>% Acerto</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <div class="card table-container">
-                <h3>Levantadores</h3>
-                <table id="table-lev">
-                    <thead><tr><th>Nome</th><th>Levant.</th><th>Levant. ✓</th><th>Nota</th><th>Ataques</th><th>Ataques ✓</th><th>Saques</th><th>Saques ✓</th><th>% Acerto</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <div class="card table-container">
-                <h3>Líberos</h3>
-                <table id="table-def">
-                    <thead><tr><th>Nome</th><th>Defesas</th><th>Defesas ✓</th><th>Nota</th><th>Passes</th><th>Passes ✓</th><th>Levant.</th><th>Levant. ✓</th><th>% Acerto</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </section>
+            </section>
         
         <section class="container">
             <div class="card">
@@ -114,7 +78,7 @@
 
     </main>
 
-        <div id="action-detail-modal" class="modal-overlay hidden">
+    <div id="action-detail-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h3 id="action-modal-title">Posição Alvo no Campo Adversário</h3>
             <div id="action-modal-options" class="position-grid">
@@ -129,14 +93,14 @@
         </div>
     </div>
 
-        <div id="setting-map-modal" class="modal-overlay hidden">
+    <div id="setting-map-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h3 id="setting-modal-title">Qualidade do Levantamento</h3>
             <div id="setting-modal-options" class="position-grid">
                 <button class="btn" data-quality="6m">6m</button>
                 <button class="btn" data-quality="7m">7m</button>
                 <button class="btn" data-quality="8m">8m</button>
-                <button class="btn btn-primary" data-quality="9m">9m</button>
+                <button class="btn btn-primary" data-quality="9m">9m (Perfeito)</button>
             </div>
             <button id="setting-modal-cancel-btn" class="btn btn-secondary">Cancelar</button>
         </div>
