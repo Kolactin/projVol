@@ -1,80 +1,191 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Scout - Vôlei</title>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
     <link rel="shortcut icon" href="pictures/favicon.png" type="image/x-icon">
 </head>
+
 <body>
-    <header><h1>Sistema de Scout de Voleibol</h1></header>
+    <header>
+        <h1>Sistema de Scout de Voleibol</h1>
+    </header>
 
     <main>
-        <section class="container">
-            <div class="card">
-                <h2 class="section-title">Adicionar Atleta</h2>
-                <form id="add-player-form" autocomplete="off">
-                    <div class="form-group"><label for="player-name-input">Nome do Atleta:</label><input type="text" id="player-name-input" placeholder="Digite um nome"></div>
-                    <div class="form-group"><p>Função:</p><div class="checkbox-group"><input type="radio" name="funcao" value="central" id="iCen"><label for="iCen">Central</label><input type="radio" name="funcao" value="ponteiro" id="iPon"><label for="iPon">Ponteiro</label><input type="radio" name="funcao" value="oposto" id="iOpo"><label for="iOpo">Oposto</label><input type="radio" name="funcao" value="levantador" id="iLev"><label for="iLev">Levantador</label><input type="radio" name="funcao" value="libero" id="iDef"><label for="iDef">Líbero</label></div></div>
-                    <div class="form-group"><p>Posição Inicial:</p><div class="checkbox-group position-group"><input type="radio" name="posicao" value="P1" id="iP1"><label for="iP1">P1</label><input type="radio" name="posicao" value="P2" id="iP2"><label for="iP2">P2</label><input type="radio" name="posicao" value="P3" id="iP3"><label for="iP3">P3</label><input type="radio" name="posicao" value="P4" id="iP4"><label for="iP4">P4</label><input type="radio" name="posicao" value="P5" id="iP5"><label for="iP5">P5</label><input type="radio" name="posicao" value="P6" id="iP6"><label for="iP6">P6</label><input type="radio" name="posicao" value="Reserva" id="iRes"><label for="iRes">Reserva</label></div></div>
-                    <button type="submit" class="btn btn-primary">Adicionar Atleta</button>
-                </form>
+        <!-- Control Panel (Collapsible) -->
+        <section class="container no-print">
+            <details class="control-panel">
+                <summary class="btn btn-secondary" style="width: 100%; text-align: left; margin-bottom: 1rem;">⚙️ Painel
+                    de Controle (Configurações & Cadastro)</summary>
+
+                <div class="card mt-1">
+                    <h2 class="section-title">Adicionar Atleta</h2>
+                    <form id="add-player-form" autocomplete="off">
+                        <div class="form-group"><label for="player-name-input">Nome do Atleta:</label><input type="text"
+                                id="player-name-input" placeholder="Digite um nome"></div>
+                        <div class="form-group">
+                            <p>Função:</p>
+                            <div class="checkbox-group"><input type="radio" name="funcao" value="central"
+                                    id="iCen"><label for="iCen">Central</label><input type="radio" name="funcao"
+                                    value="ponteiro" id="iPon"><label for="iPon">Ponteiro</label><input type="radio"
+                                    name="funcao" value="oposto" id="iOpo"><label for="iOpo">Oposto</label><input
+                                    type="radio" name="funcao" value="levantador" id="iLev"><label
+                                    for="iLev">Levantador</label><input type="radio" name="funcao" value="libero"
+                                    id="iDef"><label for="iDef">Líbero</label></div>
+                        </div>
+                        <div class="form-group">
+                            <p>Posição Inicial:</p>
+                            <div class="checkbox-group position-group"><input type="radio" name="posicao" value="P1"
+                                    id="iP1"><label for="iP1">P1</label><input type="radio" name="posicao" value="P2"
+                                    id="iP2"><label for="iP2">P2</label><input type="radio" name="posicao" value="P3"
+                                    id="iP3"><label for="iP3">P3</label><input type="radio" name="posicao" value="P4"
+                                    id="iP4"><label for="iP4">P4</label><input type="radio" name="posicao" value="P5"
+                                    id="iP5"><label for="iP5">P5</label><input type="radio" name="posicao" value="P6"
+                                    id="iP6"><label for="iP6">P6</label><input type="radio" name="posicao"
+                                    value="Reserva" id="iRes"><label for="iRes">Reserva</label></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Adicionar Atleta</button>
+                    </form>
+                </div>
+
+                <div class="card mt-1">
+                    <h2 class="section-title">Gerenciar Arquivos</h2>
+                    <div class="button-group">
+                        <button id="btn-new-game" class="btn btn-danger">Novo Jogo (Limpar Tudo)</button>
+                        <button id="btn-save-game" class="btn btn-secondary">Salvar Jogo</button>
+                        <button id="btn-load-game" class="btn btn-secondary">Carregar Jogo</button>
+                    </div>
+                    <input type="file" id="file-loader" accept="*/*" style="display: none;">
+                </div>
+            </details>
+        </section>
+
+        <!-- Main Game Dashboard -->
+        <section class="container game-dashboard">
+            <!-- Scoreboard Area -->
+            <div class="scoreboard-area">
+                <div class="card">
+                    <div id="placar-container" class="placar"></div>
+                    <div class="button-group score-controls" style="justify-content: center;">
+                        <button id="btn-add-casa" class="btn btn-success">+1 Casa</button>
+                        <button id="btn-add-fora" class="btn btn-danger">+1 Fora</button>
+                        <button id="btn-remove-last" class="btn btn-secondary">Desfazer</button>
+                        <button id="btn-reset-placar" class="btn btn-secondary">Zerar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Court & Bench Area -->
+            <div class="court-area">
+                <div class="card" style="position: relative;">
+                    <h2 class="section-title">Quadra</h2>
+                    <div class="court-container">
+                        <div class="court">
+                            <div class="net">REDE</div>
+                            <!-- Players will be injected here by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-1">
+                    <h3 style="text-align: center;">Banco de Reservas</h3>
+                    <div id="reserves-list" class="bench-chips"></div>
+                </div>
+            </div>
+
+            <!-- Timeline Area -->
+            <div class="timeline-area">
+                <div class="card">
+                    <h2 class="section-title">Timeline</h2>
+                    <div id="timeline-feed">
+                        <p class="timeline-empty">O jogo ainda não começou.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="container">
-            <div class="card">
-                <h2 class="section-title">Escalação Atual</h2>
-                <div class="roster-container">
-                    <div class="starters-box">
-                        <h3>Titulares</h3>
-                    </div>
-                    <div class="reserves-box">
-                        <h3>Reservas</h3>
-                        <div id="reserves-list"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section class="container">
-            <div class="card">
-                <h2 class="section-title">Placar</h2>
-                <div id="placar-container" class="placar"></div>
-                <div class="button-group">
-                    <button id="btn-add-casa" class="btn btn-primary">Casa +1</button>
-                    <button id="btn-add-fora" class="btn btn-danger">Fora +1</button>
-                    <button id="btn-remove-last" class="btn btn-secondary">Remover Último</button>
-                    <button id="btn-reset-placar" class="btn btn-secondary">Zerar Placar e Stats</button>
-                </div>
-            </div>
-        </section>
+
 
         <section class="container">
             <div class="card">
-                <h2 class="section-title">Timeline da Partida</h2>
-                <div id="timeline-feed">
-                    <p class="timeline-empty">Nenhum ponto registrado ainda.</p>
+                <h2 class="section-title">Estatísticas</h2>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="ata">Ataque/Bloqueio/Saque</button>
+                    <button class="tab-btn" data-tab="lev">Levantamento</button>
+                    <button class="tab-btn" data-tab="def">Defesa/Passe</button>
+                </div>
+
+                <div id="tab-ata" class="tab-content active">
+                    <div class="table-container">
+                        <table id="table-ata">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Pos</th>
+                                    <th>Atq T</th>
+                                    <th>Atq +</th>
+                                    <th>Atq -</th>
+                                    <th>Saq T</th>
+                                    <th>Saq +</th>
+                                    <th>Pas T</th>
+                                    <th>Pas +</th>
+                                    <th>% Efic</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-lev" class="tab-content">
+                    <div class="table-container">
+                        <table id="table-lev">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Lev T</th>
+                                    <th>Lev +</th>
+                                    <th>Lev -</th>
+                                    <th>Atq T</th>
+                                    <th>Atq +</th>
+                                    <th>Saq T</th>
+                                    <th>Saq +</th>
+                                    <th>% Efic</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-def" class="tab-content">
+                    <div class="table-container">
+                        <table id="table-def">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Def T</th>
+                                    <th>Def +</th>
+                                    <th>Def -</th>
+                                    <th>Pas T</th>
+                                    <th>Pas +</th>
+                                    <th>Lev T</th>
+                                    <th>Lev +</th>
+                                    <th>% Efic</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </section>
-        
-        <section class="container">
-            <h2 class="section-title">Estatísticas</h2>
-            </section>
-        
-        <section class="container">
-            <div class="card">
-                <h2 class="section-title">Gerenciar Partida</h2>
-                <div class="button-group">
-                    <button id="btn-new-game" class="btn btn-danger">Novo Jogo (Limpar Tudo)</button>
-                    <button id="btn-save-game" class="btn btn-secondary">Salvar Jogo (Arquivo)</button>
-                    <button id="btn-load-game" class="btn btn-secondary">Carregar Jogo (Arquivo)</button>
-                </div>
-                <input type="file" id="file-loader" accept="*/*" style="display: none;">
-            </div>
-        </section>
+
+
 
     </main>
 
@@ -109,4 +220,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="dados.js"></script>
 </body>
+
 </html>

@@ -5,18 +5,23 @@
 
 :root {
     /* Paleta de Cores */
-    --color-background: hsl(232, 28%, 12%); /* Fundo principal (azul bem escuro) */
-    --color-surface: hsl(232, 28%, 19%);   /* Cor dos 'cards' */
-    --color-primary: hsl(147, 53%, 39%);   /* Azul principal para botões e destaques */
+    --color-background: hsl(232, 28%, 12%);
+    /* Fundo principal (azul bem escuro) */
+    --color-surface: hsl(232, 28%, 19%);
+    /* Cor dos 'cards' */
+    --color-primary: hsl(147, 53%, 39%);
+    /* Azul principal para botões e destaques */
     --color-primary-hover: hsl(220, 80%, 70%);
     --color-danger: hsl(350, 70%, 55%);
     --color-danger-hover: hsl(350, 70%, 65%);
     --color-secondary: hsl(232, 10%, 40%);
     --color-secondary-hover: hsl(232, 10%, 50%);
-    --color-text-primary: hsl(0, 0%, 95%);    /* Texto principal (quase branco) */
-    --color-text-secondary: hsl(0, 0%, 65%); /* Texto secundário (cinza claro) */
+    --color-text-primary: hsl(0, 0%, 95%);
+    /* Texto principal (quase branco) */
+    --color-text-secondary: hsl(0, 0%, 65%);
+    /* Texto secundário (cinza claro) */
     --color-border: hsl(232, 28%, 30%);
-    
+
     --color-score-home: var(--color-primary);
     --color-score-away: var(--color-danger);
 
@@ -46,12 +51,17 @@ body {
     line-height: 1.6;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     color: var(--color-text-primary);
     font-weight: 600;
 }
 
-h1 { 
+h1 {
     text-align: center;
     padding: 2rem 0;
     font-size: 2.5rem;
@@ -163,6 +173,7 @@ h1 {
 .btn-primary {
     background-color: var(--color-primary);
 }
+
 .btn-primary:hover {
     background-color: var(--color-primary-hover);
 }
@@ -171,6 +182,7 @@ h1 {
     background-color: var(--color-secondary);
     color: var(--color-text-primary);
 }
+
 .btn-secondary:hover {
     background-color: var(--color-secondary-hover);
 }
@@ -178,38 +190,71 @@ h1 {
 .btn-danger {
     background-color: var(--color-danger);
 }
+
 .btn-danger:hover {
     background-color: var(--color-danger-hover);
 }
 
 
 /* 6. Placar */
+/* 6. Placar Digital */
 .placar {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 4px;
-    margin-bottom: 1.5rem;
-    min-height: 20px;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    background: #000;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 4px solid #333;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    font-family: 'Courier New', Courier, monospace;
+    /* Fonte estilo digital */
 }
 
-.quadrado {
-    width: 18px;
-    height: 18px;
-    border-radius: 3px;
+.placar-team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.casa {
-    background-color: var(--color-score-home);
+.score-digit {
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 0 10px currentColor;
+    background: #1a1a1a;
+    padding: 10px 20px;
+    border-radius: 8px;
+    min-width: 100px;
+    text-align: center;
 }
 
-.fora {
-    background-color: var(--color-score-away);
+.score-home .score-digit {
+    color: #00ff88;
+}
+
+/* Verde Neon Casa */
+.score-away .score-digit {
+    color: #ff0055;
+}
+
+/* Vermelho Neon Fora */
+
+.team-label {
+    color: #888;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
 }
 
 /* 7. Tabelas */
 .table-container {
-    overflow-x: auto; /* Garante rolagem em telas pequenas */
+    overflow-x: auto;
+    /* Garante rolagem em telas pequenas */
 }
 
 table {
@@ -218,7 +263,8 @@ table {
     font-size: 0.95rem;
 }
 
-th, td {
+th,
+td {
     padding: 12px 15px;
     text-align: center;
     border-bottom: 1px solid var(--color-border);
@@ -242,7 +288,8 @@ tbody tr:hover {
     background-color: hsl(232, 28%, 22%);
 }
 
-td:first-child, th:first-child {
+td:first-child,
+th:first-child {
     text-align: left;
 }
 
@@ -253,14 +300,15 @@ td:first-child, th:first-child {
     transition: background-color 0.2s, border-color 0.2s;
 }
 
-.position-group input[type="radio"]:checked + label {
+.position-group input[type="radio"]:checked+label {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
     color: white;
 }
 
 .position-group input[type="radio"] {
-    display: none; /* Esconde a bolinha do radio button */
+    display: none;
+    /* Esconde a bolinha do radio button */
 }
 
 .roster-container {
@@ -269,7 +317,8 @@ td:first-child, th:first-child {
     flex-wrap: wrap;
 }
 
-.starters-box, .reserves-box {
+.starters-box,
+.reserves-box {
     flex: 1;
     min-width: 300px;
 }
@@ -286,7 +335,8 @@ td:first-child, th:first-child {
 }
 
 .starters-box h3 {
-    grid-column: 1 / -1; /* Ocupa todas as colunas */
+    grid-column: 1 / -1;
+    /* Ocupa todas as colunas */
     margin-bottom: 0;
 }
 
@@ -315,19 +365,23 @@ td:first-child, th:first-child {
 }
 
 .clickable-reserve:hover {
-    background-color: var(--color-secondary); /* Destaca o reserva ao passar o mouse */
+    background-color: var(--color-secondary);
+    /* Destaca o reserva ao passar o mouse */
 }
 
 .starter-player {
     background-color: var(--color-background);
     padding: 1rem;
-    border-radius: 9px; /* Bordas mais arredondadas */
-    border: 2px solid var(--color-border); /* Borda mais espessa */
+    border-radius: 9px;
+    /* Bordas mais arredondadas */
+    border: 2px solid var(--color-border);
+    /* Borda mais espessa */
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease; /* Transição suave */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    /* Transição suave */
 }
 
 .starter-player:hover {
@@ -337,12 +391,15 @@ td:first-child, th:first-child {
 
 .starter-player-info {
     font-weight: 300;
-    font-size: 1.25rem; /* Nome do jogador maior */
-    text-align: center; /* Centraliza o nome */
+    font-size: 1.25rem;
+    /* Nome do jogador maior */
+    text-align: center;
+    /* Centraliza o nome */
 }
 
 .starter-player-info span {
-    display: block; /* Coloca a informação numa nova linha */
+    display: block;
+    /* Coloca a informação numa nova linha */
     font-weight: 200;
     font-size: 0.9rem;
     color: var(--color-text-secondary);
@@ -353,7 +410,8 @@ td:first-child, th:first-child {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    justify-content: center; /* Centraliza os botões */
+    justify-content: center;
+    /* Centraliza os botões */
     max-height: 0;
     opacity: 0;
     overflow: hidden;
@@ -361,8 +419,10 @@ td:first-child, th:first-child {
 }
 
 .starter-player.active {
-    background-color: hsl(232, 28%, 22%); /* Fundo mais claro */
-    border-color: var(--color-primary);   /* Borda azul para destaque */
+    background-color: hsl(232, 28%, 22%);
+    /* Fundo mais claro */
+    border-color: var(--color-primary);
+    /* Borda azul para destaque */
 }
 
 .starter-player.active .actions {
@@ -379,27 +439,42 @@ td:first-child, th:first-child {
 }
 
 .btn-success {
-    background-color: #28a745; /* Verde para acerto */
+    background-color: #28a745;
+    /* Verde para acerto */
     color: white;
 }
+
 .btn-success:hover {
     background-color: #218838;
 }
 
 .btn-error {
-    background-color: #dc3545; /* Vermelho para erro */
+    background-color: #dc3545;
+    /* Vermelho para erro */
     color: white;
 }
+
 .btn-error:hover {
     background-color: #c82333;
+}
+
+.btn-warning {
+    background-color: #fca311;
+    color: #1a1a1a;
+}
+
+.btn-warning:hover {
+    background-color: #e0920f;
 }
 
 /* --- Estilos da Timeline --- */
 #timeline-feed {
     max-height: 400px;
-    overflow-y: auto; /* Adiciona barra de rolagem se o conteúdo for grande */
+    overflow-y: auto;
+    /* Adiciona barra de rolagem se o conteúdo for grande */
     display: flex;
-    flex-direction: column-reverse; /* Mostra o evento mais recente no topo */
+    flex-direction: column-reverse;
+    /* Mostra o evento mais recente no topo */
     border-top: 2px solid var(--color-border);
     padding-top: 1rem;
 }
@@ -414,6 +489,7 @@ td:first-child, th:first-child {
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--color-border);
 }
+
 .timeline-entry:last-child {
     border-bottom: none;
     margin-bottom: 0;
@@ -437,7 +513,8 @@ td:first-child, th:first-child {
 }
 
 .timeline-actions {
-    list-style: none; /* Remove as bolinhas da lista */
+    list-style: none;
+    /* Remove as bolinhas da lista */
     padding-left: 10px;
     margin-top: 8px;
     border-left: 2px solid var(--color-border);
@@ -485,6 +562,28 @@ td:first-child, th:first-child {
     margin: 1.5rem 0;
 }
 
+.action-grid-large {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: var(--color-surface);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    max-width: 600px;
+    /* Wider modal */
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border: 1px solid var(--color-border);
+}
+
 .position-grid .btn {
     background-color: var(--color-background);
     border: 1px solid var(--color-border);
@@ -496,5 +595,200 @@ td:first-child, th:first-child {
 .position-grid .btn:hover {
     background-color: var(--color-secondary);
     border-color: var(--color-secondary-hover);
-    transform: none; /* Remove o efeito de levantar para estes botões */
+    transform: none;
+    /* Remove o efeito de levantar para estes botões */
+}
+
+/* --- 8. Visualização da Quadra (NOVO) --- */
+.court-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+.court {
+    width: 360px;
+    height: 360px;
+    background-color: #fca311;
+    /* Cor da Quadra (Laranja Vôlei) */
+    border: 4px solid white;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.court::before {
+    /* Linha dos 3m (Attack Line) */
+    content: '';
+    position: absolute;
+    top: 33.33%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: white;
+}
+
+.net {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ccc;
+    color: #333;
+    padding: 2px 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    width: 102%;
+    text-align: center;
+    height: 20px;
+    background-image: linear-gradient(45deg, #bbb 25%, transparent 25%),
+        linear-gradient(-45deg, #bbb 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #bbb 75%),
+        linear-gradient(-45deg, transparent 75%, #bbb 75%);
+    background-size: 10px 10px;
+    background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+}
+
+.court-position {
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.court-position:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    border-color: #fff;
+}
+
+.court-position span.p-name {
+    font-size: 0.7rem;
+    text-align: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 2px;
+}
+
+.court-position span.p-pos {
+    font-size: 0.6rem;
+    color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1px 4px;
+    border-radius: 4px;
+    position: absolute;
+    top: -10px;
+}
+
+/* Free Rotation CSS Grid for Positions */
+/* Top Row (4, 3, 2) */
+.p4 {
+    top: 20%;
+    left: 20%;
+}
+
+.p3 {
+    top: 20%;
+    left: 50%;
+}
+
+.p2 {
+    top: 20%;
+    left: 80%;
+}
+
+/* Back Row (5, 6, 1) */
+.p5 {
+    top: 70%;
+    left: 20%;
+}
+
+.p6 {
+    top: 70%;
+    left: 50%;
+}
+
+.p1 {
+    top: 70%;
+    left: 80%;
+}
+
+/* --- 9. Tabs --- */
+.tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.tab-btn:hover {
+    color: var(--color-text-primary);
+}
+
+.tab-btn.active {
+    color: var(--color-primary);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -0.6rem;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-primary);
+    border-radius: 3px 3px 0 0;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

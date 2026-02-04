@@ -1,0 +1,92 @@
+/* --- Dashboard Layout --- */
+.game-dashboard {
+    display: grid;
+    grid-template-columns: 350px 1fr 300px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* Responsive Dashboard: Stack on smaller screens */
+@media (max-width: 1200px) {
+    .game-dashboard {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .timeline-area {
+        grid-column: 1 / -1;
+        /* Timeline spans bottom */
+    }
+}
+
+@media (max-width: 900px) {
+    .game-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Area Specifics */
+.court-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* New Bench (Chips) */
+.bench-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 0.5rem;
+}
+
+.bench-chips .reserve-player {
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    /* Chip style */
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.bench-chips .reserve-player:hover {
+    background-color: var(--color-secondary);
+    transform: translateY(-2px);
+    border-color: var(--color-secondary-hover);
+}
+
+/* Control Panel Collapsible */
+details.control-panel summary {
+    list-style: none;
+    /* Remove default triangle */
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+details.control-panel summary::after {
+    content: '▼';
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+}
+
+details.control-panel[open] summary::after {
+    transform: rotate(180deg);
+}
+
+/* Print Friendly */
+@media print {
+
+    .no-print,
+    .game-dashboard {
+        display: none !important;
+    }
+
+    /* Stats table should be visible */
+    .stats-area {
+        display: block !important;
+    }
+}
